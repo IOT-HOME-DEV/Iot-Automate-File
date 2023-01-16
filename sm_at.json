@@ -1,0 +1,953 @@
+[
+    {
+        "label": "WhenComplate",
+        "description": "Notify when device complate",
+        "automationId": "smAutomate1",
+        "template": [
+            "plug",
+            "entertainment"
+        ],
+        "data": {
+            "id": "idName1",
+            "label": "WhenComplateAutomate",
+            "disabled": false,
+            "nodes": [
+                {
+                    "id": "idName2",
+                    "type": "api-call-service",
+                    "z": "d8d7872eb8dcad66",
+                    "name": "",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "tts",
+                    "service": "google_translate_say",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "entertainment_input"
+                    ],
+                    "data": "",
+                    "dataType": "jsonata",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [],
+                    "queue": "none",
+                    "x": 1030,
+                    "y": 200,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName3",
+                    "type": "function",
+                    "z": "d8d7872eb8dcad66",
+                    "name": "SUM VAL",
+                    "func": "let powerValue = Math.floor(parseInt(msg.payload));\nlet getChecksum = context.get(\"checksum\");\nlet checksum = getChecksum ?? true;\nvar MAX = flow.get(\"MAX\") ?? 0;\nvar MIN = flow.get(\"MIN\") ?? 0;\nlet calvalue = flow.get(\"calvalue\");\n\nasync function _main_()\n{\n    if (calvalue == false) {\n        msg.value = powerValue;\n        msg.min = MIN;\n        msg.max = MAX;\n        if (MAX != 0) {\n            node.warn(\"MAX\");\n            if ((powerValue > MIN) && checksum == true) {\n            // if ((powerValue > MIN)) {\n                node.warn(\"loop1\");\n                checksum = false;\n                context.set(\"checksum\", checksum);\n                msg.payload = { \"data\": { \"message\": \"อุปกรณ์เริ่มต้นทำงานกรุณารอสักครู่\", \"language\": \"th\" } } // data collection\n                node.send(msg);\n            }\n            else if (powerValue == 0) {\n                await sleep(5000);\n                node.warn(\"loop2\");\n                checksum = true;\n                context.set(\"checksum\", checksum);\n                msg.reset = true;\n                msg.payload = { \"data\": { \"message\": \"อุปกรณ์ทำงานเสร็จแล้ว\", \"language\": \"th\" } }; // data collection\n                node.send(msg);\n            }\n            \n        }\n    }\n    else {\n        node.warn(\"loop3\");\n        await sleep(3000);\n        msg.payload = { \"data\": { \"message\": \"กำลังเรียนรู้ค่าพลังงานกรุณารอสักครู่\", \"language\": \"th\" } }\n        node.send(msg);\n    }\n}\n\nfunction sleep(ms) {\n    return new Promise((resolve) => {\n        setTimeout(resolve, ms);\n    });\n}\n_main_();",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 720,
+                    "y": 260,
+                    "wires": [
+                        [
+                            "idName2"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName4",
+                    "type": "mqtt out",
+                    "z": "d8d7872eb8dcad66",
+                    "name": "",
+                    "topic": "",
+                    "qos": "",
+                    "retain": "",
+                    "respTopic": "",
+                    "contentType": "",
+                    "userProps": "",
+                    "correl": "",
+                    "expiry": "",
+                    "broker": "aabbcc",
+                    "x": 890,
+                    "y": 140,
+                    "wires": []
+                },
+                {
+                    "id": "idName5",
+                    "type": "function",
+                    "z": "d8d7872eb8dcad66",
+                    "name": "Cal_Val",
+                    "func": "let entity_id = msg.data.entity_id;\nlet device_class = msg.data.attributes.device_class;\n\nmsg.topic = \"zigbee2mqtt/\" + entity_id + \"/set\";\nmsg.device = device_class;\nmsg.payload = {\n    \"power\": 0\n};\nreturn msg;",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 720,
+                    "y": 140,
+                    "wires": [
+                        [
+                            "idName4"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName6",
+                    "type": "inject",
+                    "z": "d8d7872eb8dcad66",
+                    "name": "",
+                    "props": [
+                        {
+                            "p": "payload"
+                        },
+                        {
+                            "p": "topic",
+                            "vt": "str"
+                        }
+                    ],
+                    "repeat": "",
+                    "crontab": "",
+                    "once": true,
+                    "onceDelay": "1",
+                    "topic": "",
+                    "payload": "",
+                    "payloadType": "date",
+                    "x": 290,
+                    "y": 160,
+                    "wires": [
+                        [
+                            "idName8"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName7",
+                    "type": "function",
+                    "z": "d8d7872eb8dcad66",
+                    "name": "Already Automate",
+                    "func": "let entity_id = msg.data.entity_id;\nlet device_class = msg.data.attributes.device_class;\n\nif (device_class !== \"power\") {\n    msg.payload = { \"data\": { \"message\": \"ใส่Sensorกรุณาตรวจสอบ\", \"language\": \"th\" } } // data collection\n    node.send(msg);\n}\nelse {\n    msg.payload = { \"data\": { \"message\": \"Automationพร้อมใช้งานแล้ว\", \"language\": \"th\" } } // data collection\n    node.send(msg);\n}\nasync function eiei()\n{\n    await sleep(3500);\n    msg.payload = { \"data\": { \"message\": \"เปิดให้อุปกรณ์ทำงานเพื่อให้ระบบเรียนรู้ค่าพลังงาน\", \"language\": \"th\" } } // data collection\n    node.send(msg);\n    flow.set(\"calvalue\",true);\n}\neiei();\nfunction sleep(ms) {\n    return new Promise((resolve) => {\n        setTimeout(resolve, ms);\n    });\n}\n",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 750,
+                    "y": 180,
+                    "wires": [
+                        [
+                            "idName2"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName8",
+                    "type": "api-current-state",
+                    "z": "d8d7872eb8dcad66",
+                    "name": "power",
+                    "server": "smartautomation",
+                    "version": 3,
+                    "outputs": 1,
+                    "halt_if": "",
+                    "halt_if_type": "str",
+                    "halt_if_compare": "is",
+                    "entity_id": "plug_input",
+                    "state_type": "str",
+                    "blockInputOverrides": false,
+                    "outputProperties": [
+                        {
+                            "property": "payload",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "entityState"
+                        },
+                        {
+                            "property": "data",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "entity"
+                        }
+                    ],
+                    "for": "0",
+                    "forType": "num",
+                    "forUnits": "minutes",
+                    "override_topic": false,
+                    "state_location": "payload",
+                    "override_payload": "msg",
+                    "entity_location": "data",
+                    "override_data": "msg",
+                    "x": 430,
+                    "y": 160,
+                    "wires": [
+                        [
+                            "idName10"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName9",
+                    "type": "server-state-changed",
+                    "z": "d8d7872eb8dcad66",
+                    "name": "power",
+                    "server": "smartautomation",
+                    "version": 4,
+                    "exposeToHomeAssistant": false,
+                    "haConfig": [
+                        {
+                            "property": "name",
+                            "value": ""
+                        },
+                        {
+                            "property": "icon",
+                            "value": ""
+                        }
+                    ],
+                    "entityidfilter": "plug_input",
+                    "entityidfiltertype": "exact",
+                    "outputinitially": true,
+                    "state_type": "str",
+                    "haltifstate": "",
+                    "halt_if_type": "str",
+                    "halt_if_compare": "is",
+                    "outputs": 1,
+                    "output_only_on_state_change": true,
+                    "for": 0,
+                    "forType": "num",
+                    "forUnits": "minutes",
+                    "ignorePrevStateNull": false,
+                    "ignorePrevStateUnknown": false,
+                    "ignorePrevStateUnavailable": false,
+                    "ignoreCurrentStateUnknown": false,
+                    "ignoreCurrentStateUnavailable": false,
+                    "outputProperties": [
+                        {
+                            "property": "payload",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "entityState"
+                        },
+                        {
+                            "property": "data",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "eventData"
+                        },
+                        {
+                            "property": "topic",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "triggerId"
+                        }
+                    ],
+                    "x": 490,
+                    "y": 240,
+                    "wires": [
+                        [
+                            "idName11",
+                            "idName3"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName10",
+                    "type": "trigger",
+                    "z": "d8d7872eb8dcad66",
+                    "name": "",
+                    "op1": "",
+                    "op2": "",
+                    "op1type": "nul",
+                    "op2type": "pay",
+                    "duration": "3",
+                    "extend": false,
+                    "overrideDelay": false,
+                    "units": "s",
+                    "reset": "",
+                    "bytopic": "all",
+                    "topic": "topic",
+                    "outputs": 1,
+                    "x": 560,
+                    "y": 160,
+                    "wires": [
+                        [
+                            "idName5",
+                            "idName7"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName11",
+                    "type": "function",
+                    "z": "d8d7872eb8dcad66",
+                    "name": "SET MIN MAX",
+                    "func": "var MIN = flow.get(\"MIN\") ?? 0;\nvar MAX = flow.get(\"MAX\") ?? 0;\nvar COUNTER = context.get(\"COUNTER\") ?? 0;\nvar AVG = context.get(\"AVG\") ?? 0;\nvar TOTAL = context.get(\"TOTAL\") ?? 0;\nvar NEW = Math.floor(parseInt(msg.payload));\nlet calvalue = flow.get(\"calvalue\");\n\n\nif (calvalue == true)\n{\n    if (COUNTER == 0) {\n        //  First pass\n        MIN = msg.payload;\n        MAX = msg.payload;\n        flow.set(\"MAX\", NEW);\n        flow.set(\"MIN\", NEW);\n    }\n\n    if (NEW > MAX) {\n        MAX = NEW;\n        flow.set(\"MAX\", NEW);\n    }\n    if (NEW < MIN) {\n        MIN = NEW;\n        flow.set(\"MIN\", NEW);\n    }\n\n    COUNTER = COUNTER + 1;\n    context.set(\"COUNTER\", COUNTER);\n    TOTAL = TOTAL + NEW;\n    context.set(\"TOTAL\", TOTAL);\n    AVG = parseInt((TOTAL / COUNTER));\n\n    if (NEW == 0) {\n        flow.set(\"calvalue\", false);\n        msg.payload = { \"data\": { \"message\": \"การเรียนรู้ข้อมูลเสร็จสิ้น ค่าพลังงานสูงสุดคือ\" + MAX + \"วัตต์\", \"language\": \"th\" } } // data collection\n        return msg;\n    }\n}\n\n",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 740,
+                    "y": 220,
+                    "wires": [
+                        [
+                            "idName2"
+                        ]
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "nodeAmount": 4,
+        "label": "เปลี่ยนสีตามวันนะจร๊",
+        "description": "ChangeColors",
+        "type": "smAutomate2",
+        "template": [
+            "light"
+        ],
+        "data": {
+            "id": "idName1",
+            "label": "AutoChangColors",
+            "disabled": false,
+            "nodes": [
+                {
+                    "id": "idName2",
+                    "type": "inject",
+                    "z": "3b65baae780a771d",
+                    "name": "",
+                    "props": [
+                        {
+                            "p": "payload"
+                        },
+                        {
+                            "p": "topic",
+                            "vt": "str"
+                        }
+                    ],
+                    "repeat": "60",
+                    "crontab": "",
+                    "once": true,
+                    "onceDelay": 0.1,
+                    "topic": "",
+                    "payload": "",
+                    "payloadType": "date",
+                    "x": 390,
+                    "y": 160,
+                    "wires": [
+                        [
+                            "idName4"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName3",
+                    "type": "api-call-service",
+                    "z": "3b65baae780a771d",
+                    "name": "front",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "light",
+                    "service": "turn_on",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "light_input"
+                    ],
+                    "data": "",
+                    "dataType": "json",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [],
+                    "queue": "none",
+                    "x": 830,
+                    "y": 160,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName4",
+                    "type": "function",
+                    "z": "3b65baae780a771d",
+                    "name": "function 12",
+                    "func": "let count_val = context.get(\"count\") ?? 0;\nlet valColor;\nlet arr = [\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [156, 136, 255] } }, // purper\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [0, 168, 255] } }, //blue\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [251, 197, 49] } }, // yellow\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [76, 209, 55] } }, // green\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [232, 65, 24] } }, // red\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [253, 121, 168] } },// pink\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [225, 112, 85] } }] // orange\n\nnode.warn(count_val);\nvalColor = arr[count_val];\nmsg.payload = valColor;\ncount_val = count_val>=6 ? count_val=0:count_val+1;\ncontext.set(\"count\", count_val);\nreturn msg;",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 630,
+                    "y": 160,
+                    "wires": [
+                        [
+                            "idName3"
+                        ]
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "nodeAmount": 8,
+        "label": "WaterLeak",
+        "description": "WaterLeak",
+        "automationId": "smAutomate3",
+        "template": [
+            "sensor",
+            "entertainment"
+        ],
+        "data": {
+            "id": "idName1",
+            "type": "tab",
+            "label": "WaterLeak",
+            "disabled": false,
+            "nodes": [
+                {
+                    "id": "idName2",
+                    "type": "api-call-service",
+                    "z": "45ba5fb0654480e1",
+                    "name": "",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "tts",
+                    "service": "google_translate_say",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "entertainment_input"
+                    ],
+                    "data": "",
+                    "dataType": "jsonata",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [],
+                    "queue": "none",
+                    "x": 930,
+                    "y": 240,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName3",
+                    "type": "inject",
+                    "z": "45ba5fb0654480e1",
+                    "name": "",
+                    "props": [
+                        {
+                            "p": "payload"
+                        },
+                        {
+                            "p": "topic",
+                            "vt": "str"
+                        }
+                    ],
+                    "repeat": "",
+                    "crontab": "",
+                    "once": true,
+                    "onceDelay": "1",
+                    "topic": "",
+                    "payload": "",
+                    "payloadType": "date",
+                    "x": 330,
+                    "y": 320,
+                    "wires": [
+                        [
+                            "idName4"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName4",
+                    "type": "api-current-state",
+                    "z": "45ba5fb0654480e1",
+                    "name": "Water leak Input",
+                    "server": "smartautomation",
+                    "version": 3,
+                    "outputs": 1,
+                    "halt_if": "",
+                    "halt_if_type": "str",
+                    "halt_if_compare": "is",
+                    "entity_id": "sensor_input",
+                    "state_type": "str",
+                    "blockInputOverrides": false,
+                    "outputProperties": [
+                        {
+                            "property": "payload",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "entityState"
+                        },
+                        {
+                            "property": "data",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "entity"
+                        }
+                    ],
+                    "for": "0",
+                    "forType": "num",
+                    "forUnits": "minutes",
+                    "override_topic": false,
+                    "state_location": "payload",
+                    "override_payload": "msg",
+                    "entity_location": "data",
+                    "override_data": "msg",
+                    "x": 460,
+                    "y": 240,
+                    "wires": [
+                        [
+                            "idName8"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName5",
+                    "type": "function",
+                    "z": "45ba5fb0654480e1",
+                    "name": "",
+                    "func": "let Value = msg.payload;\n\nif (Value ===\"on\")\n{\n    msg.payload = { \"data\": { \"message\": \"ตรวจจับน้ำล้นได้กรุณาตรวจสอบ\",\"language\": \"th\" } } // data collection\n\n}\nelse if (Value === \"off\"){\n    \n    msg.payload = { \"data\": { \"message\": \"อุปกรณ์ทำงานปกติ\", \"language\": \"th\" } } // data collection\n    \n}\nreturn msg;\n",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 660,
+                    "y": 280,
+                    "wires": [
+                        [
+                            "idName2",
+                            "idName7"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName6",
+                    "type": "server-state-changed",
+                    "z": "45ba5fb0654480e1",
+                    "name": "water leak",
+                    "server": "smartautomation",
+                    "version": 4,
+                    "exposeToHomeAssistant": false,
+                    "haConfig": [
+                        {
+                            "property": "name",
+                            "value": ""
+                        },
+                        {
+                            "property": "icon",
+                            "value": ""
+                        }
+                    ],
+                    "entityidfilter": "sensor_input",
+                    "entityidfiltertype": "exact",
+                    "outputinitially": false,
+                    "state_type": "str",
+                    "haltifstate": "",
+                    "halt_if_type": "str",
+                    "halt_if_compare": "is",
+                    "outputs": 1,
+                    "output_only_on_state_change": true,
+                    "for": "0",
+                    "forType": "num",
+                    "forUnits": "minutes",
+                    "ignorePrevStateNull": false,
+                    "ignorePrevStateUnknown": false,
+                    "ignorePrevStateUnavailable": false,
+                    "ignoreCurrentStateUnknown": false,
+                    "ignoreCurrentStateUnavailable": false,
+                    "outputProperties": [
+                        {
+                            "property": "payload",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "entityState"
+                        },
+                        {
+                            "property": "data",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "eventData"
+                        },
+                        {
+                            "property": "topic",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "triggerId"
+                        }
+                    ],
+                    "x": 480,
+                    "y": 320,
+                    "wires": [
+                        [
+                            "idName7"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName7",
+                    "type": "trigger",
+                    "z": "45ba5fb0654480e1",
+                    "name": "",
+                    "op1": "",
+                    "op2": "",
+                    "op1type": "nul",
+                    "op2type": "pay",
+                    "duration": "3",
+                    "extend": false,
+                    "overrideDelay": false,
+                    "units": "s",
+                    "reset": "off",
+                    "bytopic": "all",
+                    "topic": "topic",
+                    "outputs": 1,
+                    "x": 660,
+                    "y": 320,
+                    "wires": [
+                        [
+                            "idName5"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName8",
+                    "type": "function",
+                    "z": "45ba5fb0654480e1",
+                    "name": "Already Automate",
+                    "func": "let entity_id = msg.data.entity_id;\nlet device_class = msg.data.attributes.device_class;\n\n\nif (device_class !== \"moisture\")\n{\n    msg.payload = { \"data\": { \"message\": \"ใส่Sensorผิดไอ่ฟาย\", \"language\": \"th\" } } // data collection\n}\nelse{\n    msg.payload = { \"data\": { \"message\": \"Automation Water leak พร้อมใช้งานแล้ว\", \"language\": \"th\" } } // data collection\n}\n\nreturn msg;",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 690,
+                    "y": 240,
+                    "wires": [
+                        [
+                            "idName2"
+                        ]
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "nodeAmount": 10,
+        "label": "SmartSwitch*Air,TV,Light",
+        "description": "SmartSwitch*Air,TV,Light",
+        "automationId": "smAutomate4",
+        "template": [
+            "sensor",
+            "light",
+            "climate",
+            "entertainment"
+        ],
+        "data": {
+            "id": "idName1",
+            "label": "SmartSwitch*Air,TV,Light",
+            "disabled": false,
+            "nodes": [
+                {
+                    "id": "idName2",
+                    "type": "server-state-changed",
+                    "z": "01ed365d8c740548",
+                    "name": "Switch",
+                    "server": "smartautomation",
+                    "version": 4,
+                    "exposeToHomeAssistant": false,
+                    "haConfig": [
+                        {
+                            "property": "name",
+                            "value": ""
+                        },
+                        {
+                            "property": "icon",
+                            "value": ""
+                        }
+                    ],
+                    "entityidfilter": "sensor_input",
+                    "entityidfiltertype": "exact",
+                    "outputinitially": true,
+                    "state_type": "str",
+                    "haltifstate": "",
+                    "halt_if_type": "str",
+                    "halt_if_compare": "is",
+                    "outputs": 1,
+                    "output_only_on_state_change": true,
+                    "for": 0,
+                    "forType": "num",
+                    "forUnits": "minutes",
+                    "ignorePrevStateNull": false,
+                    "ignorePrevStateUnknown": false,
+                    "ignorePrevStateUnavailable": false,
+                    "ignoreCurrentStateUnknown": false,
+                    "ignoreCurrentStateUnavailable": false,
+                    "outputProperties": [
+                        {
+                            "property": "payload",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "entityState"
+                        },
+                        {
+                            "property": "data",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "eventData"
+                        },
+                        {
+                            "property": "topic",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "triggerId"
+                        }
+                    ],
+                    "x": 310,
+                    "y": 240,
+                    "wires": [
+                        [
+                            "idName3"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName3",
+                    "type": "switch",
+                    "z": "01ed365d8c740548",
+                    "name": "",
+                    "property": "payload",
+                    "propertyType": "msg",
+                    "rules": [
+                        {
+                            "t": "eq",
+                            "v": "1_single",
+                            "vt": "str"
+                        },
+                        {
+                            "t": "eq",
+                            "v": "1_double",
+                            "vt": "str"
+                        },
+                        {
+                            "t": "eq",
+                            "v": "2_single",
+                            "vt": "str"
+                        },
+                        {
+                            "t": "eq",
+                            "v": "2_double",
+                            "vt": "str"
+                        },
+                        {
+                            "t": "eq",
+                            "v": "3_single",
+                            "vt": "str"
+                        },
+                        {
+                            "t": "eq",
+                            "v": "3_double",
+                            "vt": "str"
+                        },
+                        {
+                            "t": "eq",
+                            "v": "4_single",
+                            "vt": "str"
+                        }
+                    ],
+                    "checkall": "true",
+                    "repair": false,
+                    "outputs": 7,
+                    "x": 430,
+                    "y": 240,
+                    "wires": [
+                        [
+                            "idName5",
+                            "idName7"
+                        ],
+                        [
+                            "idName5",
+                            "idName7"
+                        ],
+                        [
+                            "idName7",
+                            "idName5"
+                        ],
+                        [
+                            "idName7",
+                            "idName5"
+                        ],
+                        [
+                            "idName9"
+                        ],
+                        [
+                            "idName9"
+                        ],
+                        [
+                            "idName10"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName4",
+                    "type": "mqtt out",
+                    "z": "01ed365d8c740548",
+                    "name": "",
+                    "topic": "",
+                    "qos": "",
+                    "retain": "",
+                    "respTopic": "",
+                    "contentType": "",
+                    "userProps": "",
+                    "correl": "",
+                    "expiry": "",
+                    "broker": "aabbcc",
+                    "x": 770,
+                    "y": 220,
+                    "wires": []
+                },
+                {
+                    "id": "idName5",
+                    "type": "function",
+                    "z": "01ed365d8c740548",
+                    "name": "input remote",
+                    "func": "let entityId = \"climate_input\";\nlet numSwitch = msg.payload;\n\n\n\nswitch (numSwitch) {\n    case \"1_single\":\n        msg.topic = \"ir_remote/send/air\";\n        msg.payload = { \"logic\": 1, \"friendly_name\": entityId }\n        break;\n    case \"1_double\":\n        msg.topic = \"ir_remote/send/air\";\n        msg.payload = { \"logic\": 0, \"friendly_name\": entityId }\n        break;\n    case \"2_single\":\n        msg.topic = \"ir_remote/send/tv\";\n        msg.payload = { \"logic\": 1, \"friendly_name\": entityId }\n        break;\n    case \"2_double\":\n        msg.topic = \"ir_remote/send/tv\";\n        msg.payload = { \"logic\": 0, \"friendly_name\": entityId }\n        break;\n    default:  \n}\nreturn msg;",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 610,
+                    "y": 220,
+                    "wires": [
+                        [
+                            "idName4"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName6",
+                    "type": "api-call-service",
+                    "z": "01ed365d8c740548",
+                    "name": "",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "tts",
+                    "service": "google_translate_say",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "entertainment_input"
+                    ],
+                    "data": "",
+                    "dataType": "jsonata",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [],
+                    "queue": "none",
+                    "x": 830,
+                    "y": 180,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName7",
+                    "type": "function",
+                    "z": "01ed365d8c740548",
+                    "name": "google nest",
+                    "func": "\nlet numSwitch = msg.payload;\n\nswitch (numSwitch) {\n    case \"1_single\":\n        msg.payload = { \"data\": { \"message\": \"ระบบกำลังเปิดแอร์\", \"language\": \"th\" } }\n        break;\n    case \"1_double\":\n        msg.payload = { \"data\": { \"message\": \"ระบบกำลังปิดแอร์\", \"language\": \"th\" } }\n        break;\n    case \"2_single\":\n        msg.topic = \"ir_remote/send/tv\";\n        msg.payload = { \"data\": { \"message\": \"ระบบกำลังเปิดทีวี\", \"language\": \"th\" } }\n        break;\n    case \"2_double\":\n        msg.topic = \"ir_remote/send/tv\";\n        msg.payload = { \"data\": { \"message\": \"ระบบกำลังปิดทีวี\", \"language\": \"th\" } }\n        break;\n    default:  \n}\nreturn msg;",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 610,
+                    "y": 180,
+                    "wires": [
+                        [
+                            "idName6"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName8",
+                    "type": "api-call-service",
+                    "z": "01ed365d8c740548",
+                    "name": "",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "light",
+                    "service": "turn_on",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "light_input"
+                    ],
+                    "data": "",
+                    "dataType": "jsonata",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [],
+                    "queue": "none",
+                    "x": 790,
+                    "y": 260,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName9",
+                    "type": "function",
+                    "z": "01ed365d8c740548",
+                    "name": "light switch",
+                    "func": "let count_val = context.get(\"count\") ?? 0;\nlet brightness = context.get(\"brightness\") ?? 60;\nlet valColor;\nlet arr = [\n    { \"data\": { \"brightness_pct\": brightness, \"color_temp\": 500 } }, \n    { \"data\": { \"brightness_pct\": brightness, \"color_temp\": 300 } }, \n    { \"data\": { \"brightness_pct\": brightness, \"color_temp\": 50 } },\n    { \"data\": { \"brightness_pct\": brightness}} // yellow\n] // orange\nlet numSwitch = msg.payload;\nswitch (numSwitch) {\n    case \"3_single\":\n        node.warn(brightness);\n        if (brightness >= 100)\n        {\n            brightness = 0;\n        }\n        brightness = brightness + 20;\n        valColor = arr[3];\n        msg.payload = valColor;\n        context.set(\"brightness\", brightness );\n        break;\n    case \"3_double\":\n        count_val = count_val >=2 ? count_val = 0 : count_val + 1;\n        node.warn(\"3_double: \"+brightness);\n        node.warn(count_val);\n        valColor = arr[count_val];\n        msg.payload = valColor;\n        context.set(\"count\", count_val);\n        break;\n    default:  \n}\nreturn msg;",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 610,
+                    "y": 260,
+                    "wires": [
+                        [
+                            "idName8"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName10",
+                    "type": "api-call-service",
+                    "z": "01ed365d8c740548",
+                    "name": "",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "light",
+                    "service": "turn_off",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "light_input"
+                    ],
+                    "data": "",
+                    "dataType": "jsonata",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [],
+                    "queue": "none",
+                    "x": 790,
+                    "y": 300,
+                    "wires": [
+                        []
+                    ]
+                }
+            ]
+        }
+    }
+]

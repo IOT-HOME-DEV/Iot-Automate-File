@@ -1,0 +1,69 @@
+[
+    {
+        "nodeAmount":11,
+        "manual" : "https://bit.ly/3k3idj4",
+        "label": "WhenComplate",
+        "description": "Notify when device complate",
+        "automationId": "smAutomate1",
+        "template": [
+            "plug",
+            "entertainment"
+        ],
+        "templateEntity": [
+            "sensor.entityName_plug_power",
+            "media_player.entityName_entertainment"
+        ]
+    },
+    {
+        "nodeAmount":4,
+        "manual" : "https://bit.ly/3k3idj4",
+        "label": "AutoChangeColors",
+        "description": "Smart Automate 2",
+        "automationId": "smAutomate2",
+        "template": [
+            "light"
+        ],
+        "templateEntity": [
+            "light.entityName_light"
+        ]
+    },
+    {
+        "nodeAmount":8,
+        "manual" : "https://bit.ly/3k3idj4",
+        "label": "WaterLeak",
+        "description": "Smart Automate 3",
+        "automationId": "smAutomate3",
+        "template": [
+            "sensor",
+            "entertainment"
+        ],
+        "templateEntity": [
+            "binary_sensor.entityName_sensor_water_leak",
+            "media_player.entityName_entertainment"
+        ]
+    },
+    {
+        "nodeAmount":10,
+        "manual" : "https://bit.ly/3k3idj4",
+        "label": "SmartSwitch*Air,TV,Light",
+        "description": "SmartSwitch*Air,TV,Light",
+        "automationId": "smAutomate4",
+        "template": [
+            "sensor",
+            "light",
+            "climate",
+            "entertainment"
+        ],
+        "templateEntity": [
+            "sensor.entityName_sensor_action",
+            "light.entityName_light",
+            "entityName_climate",
+            "media_player.entityName_entertainment"
+        ]
+    }
+]
+
+
+
+
+
