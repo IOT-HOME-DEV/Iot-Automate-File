@@ -1,39 +1,75 @@
 [
-    
     {
-        "nodeAmount":11,
-        "manual" : "https://bit.ly/3k3idj4",
-        "label": "WhenComplate",
-        "description": "Notify when device complate",
+        "nodeAmount": 9,
+        "manual": "https://bit.ly/3Z8dEmH",
+        "label": "SmartSwitch,Air,TV,Light",
+        "description": "SmartSwitch,Air,TV,Light",
         "automationId": "smAutomate1",
+        "templateName":["Scene Switch","IR Remode"],
         "template": [
-            "plug",
+            "sensor",
+            "climate"
+        ],
+        "templateEntity": [
+            "sensor.entityName_sensor_action",
+            "entityName_climate"
+        ]
+    },
+    {
+        "nodeAmount": 12,
+        "manual": "https://bit.ly/3k3idj4",
+        "label": "YOUR-SCENE-WITH-NFC",
+        "description": "YOUR-SCENE-WITH-NFC",
+        "automationId": "smAutomate2",
+        "templateName":["Off Scene","Open Scene","NFC Reader","NFC TAG","audio","Speaker"],
+        "template": [
+            "scene",
+            "scene",
+            "sensor",
+            "textscan",
+            "audio",
             "entertainment"
         ],
         "templateEntity": [
-            "sensor.entityName_plug_power",
+            "entityName_scene",
+            "entityName_scene",
+            "entityName_sensor",
+            "entityName_text",
+            "entityName_text",
             "media_player.entityName_entertainment"
         ]
     },
     {
-        "nodeAmount":4,
-        "manual" : "https://bit.ly/3k3idj4",
-        "label": "AutoChangeColors",
-        "description": "Smart Automate 2",
-        "automationId": "smAutomate2",
+        "nodeAmount": 11,
+        "manual": "https://bit.ly/3k3idj4",
+        "label": "WhenComplate",
+        "description": "Notify when device complate",
+        "automationId": "smAutomate3",
+        "hint": [
+            {
+                "name": "คำพูดเสียง",
+                "index": 2
+            }
+        ],
+        "templateName":["Plug","Speaker","text for speak"],
         "template": [
-            "light"
+            "plug",
+            "entertainment",
+            "text"
         ],
         "templateEntity": [
-            "light.entityName_light"
+            "sensor.entityName_plug_power",
+            "media_player.entityName_entertainment",
+            "entityName_text"
         ]
     },
     {
-        "nodeAmount":8,
-        "manual" : "https://bit.ly/3k3idj4",
+        "nodeAmount": 8,
+        "manual": "https://bit.ly/3FcG0or",
         "label": "WaterLeak",
-        "description": "Smart Automate 3",
-        "automationId": "smAutomate3",
+        "description": "Smart Automate 4",
+        "templateName":["water leak sensor","speaker"],
+        "automationId": "smAutomate4",
         "template": [
             "sensor",
             "entertainment"
@@ -44,27 +80,144 @@
         ]
     },
     {
-        "nodeAmount":10,
-        "manual" : "https://bit.ly/3k3idj4",
-        "label": "SmartSwitch*Air,TV,Light",
-        "description": "SmartSwitch*Air,TV,Light",
-        "automationId": "smAutomate4",
+        "nodeAmount": 5,
+        "manual": "https://bit.ly/3ZDOxbY",
+        "label": "AutoChangeColors",
+        "description": "Smart Automate 5",
+        "templateName":["light","start time","end time"],
+        "automationId": "smAutomate5",
+        "hint": [
+            {
+                "name": "เริ่มต้น(ตย. 22:00)",
+                "index": 1
+            },
+            {
+                "name": "สิ้นสุด(ตย. 07:00)",
+                "index": 2
+            }
+        ],
         "template": [
-            "sensor",
             "light",
-            "climate",
-            "entertainment"
+            "text",
+            "text"
         ],
         "templateEntity": [
-            "sensor.entityName_sensor_action",
             "light.entityName_light",
+            "entityName_text",
+            "entityName_text"
+        ]
+    },
+    {
+        "nodeAmount": 29,
+        "manual": "https://bit.ly/3KuuIPI",
+        "label": "Sleep-mode",
+        "description": "Smart Automate 6",
+        "templateName":["Motion sensor","Motion sensor","light","start time","end time","day of week","delay time"],
+        "automationId": "smAutomate6",
+        "hint": [
+            {
+                "name": "เริ่มนอน(ตย. 22:00)",
+                "index": 3
+            },
+            {
+                "name": "ตื่นนอน(ตย. 07:00)",
+                "index": 4
+            },
+            {
+                "name": "วันทำการ(ตย * หรือ 0123456)",
+                "index": 5
+            },
+            {
+                "name": "หน่วงเวลานอน(ตย 10)/นาที",
+                "index": 6
+            }
+        ],
+        "template": [
+            "sensor",
+            "sensor",
+            "light",
+            "text",
+            "text",
+            "text",
+            "text"
+        ],
+        "templateEntity": [
+            "binary_sensor.entityName_sensor_occupancy",
+            "binary_sensor.entityName_sensor_occupancy",
+            "light.entityName_light",
+            "entityName_text",
+            "entityName_text",
+            "entityName_text",
+            "entityName_text"
+        ]
+    },
+    {
+        "nodeAmount": 15,
+        "manual": "https://bit.ly/3k3idj4",
+        "label": "Eco-mode-office",
+        "description": "Smart Automate 7",
+        "automationId": "smAutomate7",
+        "templateName":["Motion sensor","Motion sensor","Motion sensor","Motion sensor","Motion sensor","Motion sensor","Motion sensor","plug","Ir remote","light"],
+        "template": [
+            "sensor",
+            "sensor",
+            "sensor",
+            "sensor",
+            "sensor",
+            "sensor",
+            "sensor",
+            "plug",
+            "climate",
+            "light"
+        ],
+        "templateEntity": [
+            "binary_sensor.entityName_sensor_occupancy",
+            "binary_sensor.entityName_sensor_occupancy",
+            "binary_sensor.entityName_sensor_occupancy",
+            "binary_sensor.entityName_sensor_occupancy",
+            "binary_sensor.entityName_sensor_occupancy",
+            "binary_sensor.entityName_sensor_occupancy",
+            "binary_sensor.entityName_sensor_occupancy",
+            "switch.entityName_plug",
             "entityName_climate",
-            "media_player.entityName_entertainment"
+            "light.entityName_light"
+        ]
+    },
+    {
+        "nodeAmount": 13,
+        "manual": "https://bit.ly/3mIQVjn",
+        "label": "Eco-mode",
+        "description": "Smart Automate 8",
+        "automationId": "smAutomate8",
+        "templateName":["Scene Switch","Motion sensor","light","start time","end time","delay time"],
+        "hint": [
+            {
+                "name": "เริ่มต้น",
+                "index": 3
+            },
+            {
+                "name": "สิ้นสุด",
+                "index": 4
+            },
+            {
+                "name": "หน่วงเวลานอน(ตย 10)/นาที"
+            }
+        ],
+        "template": [
+            "sensor",
+            "sensor",
+            "light",
+            "text",
+            "text",
+            "text"
+        ],
+        "templateEntity": [
+            "binary_sensor.entityName_sensor_occupancy",
+            "binary_sensor.entityName_sensor_occupancy",
+            "light.entityName_light",
+            "entityName_text",
+            "entityName_text",
+            "entityName_text"
         ]
     }
 ]
-
-
-
-
-

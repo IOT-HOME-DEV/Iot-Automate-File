@@ -1,12 +1,594 @@
 [
-    
+    {
+        "nodeAmount": 9,
+        "label": "SmartSwitch,Air,TV,Light",
+        "description": "SmartSwitch,Air,TV,Light",
+        "automationId": "smAutomate1",
+        "template": [
+            "sensor",
+            "climate"
+        ],
+        "data": {
+            "id": "idName1",
+            "label": "SCENE-SWITCH",
+            "disabled": false,
+            "nodes": [
+                {
+                    "id": "idName2",
+                    "type": "http request",
+                    "z": "be73f104decf148d",
+                    "name": "",
+                    "method": "GET",
+                    "ret": "txt",
+                    "paytoqs": "ignore",
+                    "url": "http://homeassistant:1880/endpoint/sleep-mode",
+                    "tls": "",
+                    "persist": false,
+                    "proxy": "",
+                    "insecureHTTPParser": false,
+                    "authType": "",
+                    "senderr": false,
+                    "headers": [],
+                    "x": 630,
+                    "y": 260,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName3",
+                    "type": "server-state-changed",
+                    "z": "be73f104decf148d",
+                    "name": "Switch",
+                    "server": "smartautomation",
+                    "version": 4,
+                    "exposeToHomeAssistant": false,
+                    "haConfig": [
+                        {
+                            "property": "name",
+                            "value": ""
+                        },
+                        {
+                            "property": "icon",
+                            "value": ""
+                        }
+                    ],
+                    "entityidfilter": "sensor_input_0",
+                    "entityidfiltertype": "exact",
+                    "outputinitially": true,
+                    "state_type": "str",
+                    "haltifstate": "",
+                    "halt_if_type": "str",
+                    "halt_if_compare": "is",
+                    "outputs": 1,
+                    "output_only_on_state_change": true,
+                    "for": 0,
+                    "forType": "num",
+                    "forUnits": "minutes",
+                    "ignorePrevStateNull": false,
+                    "ignorePrevStateUnknown": false,
+                    "ignorePrevStateUnavailable": false,
+                    "ignoreCurrentStateUnknown": false,
+                    "ignoreCurrentStateUnavailable": false,
+                    "outputProperties": [
+                        {
+                            "property": "payload",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "entityState"
+                        },
+                        {
+                            "property": "data",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "eventData"
+                        },
+                        {
+                            "property": "topic",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "triggerId"
+                        }
+                    ],
+                    "x": 230,
+                    "y": 180,
+                    "wires": [
+                        [
+                            "idName4"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName4",
+                    "type": "switch",
+                    "z": "be73f104decf148d",
+                    "name": "",
+                    "property": "payload",
+                    "propertyType": "msg",
+                    "rules": [
+                        {
+                            "t": "eq",
+                            "v": "1_single",
+                            "vt": "str"
+                        },
+                        {
+                            "t": "eq",
+                            "v": "1_double",
+                            "vt": "str"
+                        },
+                        {
+                            "t": "eq",
+                            "v": "2_single",
+                            "vt": "str"
+                        },
+                        {
+                            "t": "eq",
+                            "v": "2_double",
+                            "vt": "str"
+                        },
+                        {
+                            "t": "eq",
+                            "v": "3_single",
+                            "vt": "str"
+                        },
+                        {
+                            "t": "eq",
+                            "v": "3_double",
+                            "vt": "str"
+                        },
+                        {
+                            "t": "eq",
+                            "v": "4_single",
+                            "vt": "str"
+                        },
+                        {
+                            "t": "eq",
+                            "v": "4_double",
+                            "vt": "str"
+                        }
+                    ],
+                    "checkall": "true",
+                    "repair": false,
+                    "outputs": 8,
+                    "x": 450,
+                    "y": 180,
+                    "wires": [
+                        [
+                            "idName6"
+                        ],
+                        [
+                            "idName6"
+                        ],
+                        [],
+                        [],
+                        [
+                            "idName8"
+                        ],
+                        [
+                            "idName9"
+                        ],
+                        [
+                            "idName2"
+                        ],
+                        [
+                            "idName7"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName5",
+                    "type": "mqtt out",
+                    "z": "be73f104decf148d",
+                    "name": "",
+                    "topic": "",
+                    "qos": "",
+                    "retain": "",
+                    "respTopic": "",
+                    "contentType": "",
+                    "userProps": "",
+                    "correl": "",
+                    "expiry": "",
+                    "broker": "aabbcc",
+                    "x": 790,
+                    "y": 120,
+                    "wires": []
+                },
+                {
+                    "id": "idName6",
+                    "type": "function",
+                    "z": "be73f104decf148d",
+                    "name": "input remote",
+                    "func": "let entityId = \"climate_input_1\";\nlet numSwitch = msg.payload;\n\n\n\nswitch (numSwitch) {\n    case \"1_single\":\n        msg.topic = \"ir_remote/send/air\";\n        msg.payload = { \"logic\": 1, \"friendly_name\": entityId }\n        break;\n    case \"1_double\":\n        msg.topic = \"ir_remote/send/air\";\n        msg.payload = { \"logic\": 0, \"friendly_name\": entityId }\n        break;\n    case \"2_single\":\n        msg.topic = \"ir_remote/send/tv\";\n        msg.payload = { \"logic\": 1, \"friendly_name\": entityId }\n        break;\n    case \"2_double\":\n        msg.topic = \"ir_remote/send/tv\";\n        msg.payload = { \"logic\": 0, \"friendly_name\": entityId }\n        break;\n    default:  \n}\nreturn msg;",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 630,
+                    "y": 120,
+                    "wires": [
+                        [
+                            "idName5"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName7",
+                    "type": "http request",
+                    "z": "be73f104decf148d",
+                    "name": "",
+                    "method": "GET",
+                    "ret": "txt",
+                    "paytoqs": "ignore",
+                    "url": "http://homeassistant:1880/endpoint/sleep-mode-off",
+                    "tls": "",
+                    "persist": false,
+                    "proxy": "",
+                    "insecureHTTPParser": false,
+                    "authType": "",
+                    "senderr": false,
+                    "headers": [],
+                    "x": 630,
+                    "y": 300,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName8",
+                    "type": "http request",
+                    "z": "be73f104decf148d",
+                    "name": "",
+                    "method": "GET",
+                    "ret": "txt",
+                    "paytoqs": "ignore",
+                    "url": "http://homeassistant:1880/endpoint/light-change",
+                    "tls": "",
+                    "persist": false,
+                    "proxy": "",
+                    "insecureHTTPParser": false,
+                    "authType": "",
+                    "senderr": false,
+                    "headers": [],
+                    "x": 630,
+                    "y": 180,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName9",
+                    "type": "http request",
+                    "z": "be73f104decf148d",
+                    "name": "",
+                    "method": "GET",
+                    "ret": "txt",
+                    "paytoqs": "ignore",
+                    "url": "http://homeassistant:1880/endpoint/light-dim",
+                    "tls": "",
+                    "persist": false,
+                    "proxy": "",
+                    "insecureHTTPParser": false,
+                    "authType": "",
+                    "senderr": false,
+                    "headers": [],
+                    "x": 630,
+                    "y": 220,
+                    "wires": [
+                        []
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "nodeAmount": 12,
+        "manual": "https://bit.ly/3k3idj4",
+        "label": "YOUR-SCENE-WITH-NFC",
+        "description": "YOUR-SCENE-WITH-NFC",
+        "automationId": "smAutomate2",
+        "template": [
+            "scene",
+            "scene",
+            "sensor",
+            "textscan",
+            "audio",
+            "entertainment"
+        ],
+        "data": {
+            "id": "idName1",
+            "label": "YOUR-SCENE-WITH-NFC",
+            "disabled": false,
+            "nodes": [
+                {
+                    "id": "idName2",
+                    "type": "mqtt in",
+                    "z": "bc1138bd9e50a2ca",
+                    "name": "",
+                    "topic": "/esp/nfc/sensor_input_2",
+                    "qos": "0",
+                    "datatype": "auto-detect",
+                    "broker": "aabbcc",
+                    "nl": false,
+                    "rap": true,
+                    "rh": 0,
+                    "inputs": 0,
+                    "x": 150,
+                    "y": 140,
+                    "wires": [
+                        [
+                            "idName11"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName3",
+                    "type": "function",
+                    "z": "bc1138bd9e50a2ca",
+                    "name": "light switch",
+                    "func": "let count_val = context.get(\"count\") ?? 0;\nlet brightness = context.get(\"brightness\") ?? 60;\nlet valColor;\nlet arr = [\n    { \"data\": { \"brightness\": 255, \"rgb_color\": [247, 220, 111] } }, // purper\n    { \"data\": { \"brightness\": 255, \"rgb_color\": [252, 194, 0] } }, //blue\n    { \"data\": { \"brightness\": 255, \"rgb_color\": [248, 248, 255] } },\n    { \"data\": { \"brightness_pct\": brightness}} // yellow\n] // orange\nlet numSwitch = msg.payload;\nswitch (numSwitch) {\n    // 0477BF2D100289\n    case \"137FAD03\":\n        node.warn(brightness);\n  \n        \n        if (brightness >= 100)\n        {\n            brightness = 0;\n        }\n        brightness = brightness + 20;\n        valColor = arr[3];\n        msg.payload = valColor;\n        context.set(\"brightness\", brightness );\n        break;\n// E468CA4D\n    case \"0477BF2D100289\":\n        count_val = count_val >=2 ? count_val = 0 : count_val + 1;\n        node.warn(count_val);\n        valColor = arr[count_val];\n        msg.payload = valColor;\n        context.set(\"count\", count_val);\n        break;\n    default:  \n}\nreturn msg;",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 630,
+                    "y": 100,
+                    "wires": [
+                        [
+                            "idName7"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName4",
+                    "type": "trigger",
+                    "z": "bc1138bd9e50a2ca",
+                    "name": "",
+                    "op1": "",
+                    "op2": "",
+                    "op1type": "nul",
+                    "op2type": "pay",
+                    "duration": "8",
+                    "extend": true,
+                    "overrideDelay": false,
+                    "units": "s",
+                    "reset": "",
+                    "bytopic": "all",
+                    "topic": "topic",
+                    "outputs": 1,
+                    "x": 440,
+                    "y": 180,
+                    "wires": [
+                        [
+                            "idName10"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName5",
+                    "type": "http request",
+                    "z": "bc1138bd9e50a2ca",
+                    "name": "http",
+                    "method": "POST",
+                    "ret": "obj",
+                    "paytoqs": "ignore",
+                    "url": "homeassistant:9000/api/scene/{{{id}}}/change",
+                    "tls": "",
+                    "persist": false,
+                    "proxy": "",
+                    "insecureHTTPParser": false,
+                    "authType": "",
+                    "senderr": false,
+                    "headers": [],
+                    "x": 990,
+                    "y": 140,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName6",
+                    "type": "change",
+                    "z": "bc1138bd9e50a2ca",
+                    "name": "DETECT SET",
+                    "rules": [
+                        {
+                            "t": "set",
+                            "p": "payload",
+                            "pt": "msg",
+                            "to": "{\"groupId\":\"entityName_scene_0\",\"isForce\":false}",
+                            "tot": "json"
+                        },
+                        {
+                            "t": "set",
+                            "p": "id",
+                            "pt": "msg",
+                            "to": "entityName_groupId_0",
+                            "tot": "str"
+                        },
+                        {
+                            "t": "set",
+                            "p": "headers",
+                            "pt": "msg",
+                            "to": "{\"authorization\":\"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZmQ0MDNiMGZmZDJlZDUzNjFjYTMwZSIsImlhdCI6MTY3NzU0MTQzNX0.xOmyUmADc3MoQIXtD9Xi_O4zh2TlCUToGKYO8txCKT0\"}",
+                            "tot": "json"
+                        }
+                    ],
+                    "action": "",
+                    "property": "",
+                    "from": "",
+                    "to": "",
+                    "reg": false,
+                    "x": 810,
+                    "y": 180,
+                    "wires": [
+                        [
+                            "idName5"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName7",
+                    "type": "change",
+                    "z": "bc1138bd9e50a2ca",
+                    "name": "DETECT SET",
+                    "rules": [
+                        {
+                            "t": "set",
+                            "p": "payload",
+                            "pt": "msg",
+                            "to": "{\"groupId\":\"entityName_scene_1\",\"isForce\":true}",
+                            "tot": "json"
+                        },
+                        {
+                            "t": "set",
+                            "p": "id",
+                            "pt": "msg",
+                            "to": "entityName_groupId_1",
+                            "tot": "str"
+                        },
+                        {
+                            "t": "set",
+                            "p": "headers",
+                            "pt": "msg",
+                            "to": "{\"authorization\":\"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZmQ0MDNiMGZmZDJlZDUzNjFjYTMwZSIsImlhdCI6MTY3NzU0MTQzNX0.xOmyUmADc3MoQIXtD9Xi_O4zh2TlCUToGKYO8txCKT0\"}",
+                            "tot": "json"
+                        }
+                    ],
+                    "action": "",
+                    "property": "",
+                    "from": "",
+                    "to": "",
+                    "reg": false,
+                    "x": 810,
+                    "y": 100,
+                    "wires": [
+                        [
+                            "idName5",
+                            "idName12"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName8",
+                    "type": "switch",
+                    "z": "bc1138bd9e50a2ca",
+                    "name": "msg.nfc_id",
+                    "property": "nfc_id",
+                    "propertyType": "msg",
+                    "rules": [
+                        {
+                            "t": "eq",
+                            "v": "textscan_input_3",
+                            "vt": "str"
+                        }
+                    ],
+                    "checkall": "true",
+                    "repair": false,
+                    "outputs": 1,
+                    "x": 290,
+                    "y": 140,
+                    "wires": [
+                        [
+                            "idName4",
+                            "idName9"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName9",
+                    "type": "function",
+                    "z": "bc1138bd9e50a2ca",
+                    "name": "Get-State-false",
+                    "func": "let state = flow.get(\"state\") ?? false;\n\nif (!state)\n{\n    flow.set(\"state\",true);\n    return msg;\n}\n\n",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 460,
+                    "y": 100,
+                    "wires": [
+                        [
+                            "idName3"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName10",
+                    "type": "function",
+                    "z": "bc1138bd9e50a2ca",
+                    "name": "Get-State-true",
+                    "func": "let state = flow.get(\"state\") ?? false;\n\nif (state)\n{\n    flow.set(\"state\",false);\n    return msg;\n}\n\n",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 600,
+                    "y": 180,
+                    "wires": [
+                        [
+                            "idName6"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName11",
+                    "type": "function",
+                    "z": "bae65a19d921fbad",
+                    "name": "manage value",
+                    "func": "let my_mac = msg.topic;\nlet val_payload = msg.payload;\nlet nfc_id = msg.payload.nfc_id;\nlet value = msg.payload.value;\nconst split_topic = my_mac.split(\"/\", 4);\n\n\nmsg.nfc_val = value;\nmsg.nfc_id = nfc_id;\nlet text = split_topic[3];\nconst myArray = text.split(\":\");\nlet get_mac = myArray.join('');\nnode.warn(get_mac);\nnode.warn(\"eiei \" + nfc_id + '' + value);\nmsg.entity_id = `sensor.` + get_mac + `_action`;\nnode.warn(msg.entity_id);\nmsg.payload = {\n    data: {\n        state: true,\n        attributes: {\n            'name': 'NFC',\n            'counter': 6,\n            'nfc_id': '' + nfc_id,\n            'value': '' + value,\n            friendly_name: 'nfc_' + get_mac,\n            icon: 'mdi:nfc'\n        }\n    }\n};\nreturn msg;\n",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 360,
+                    "y": 280,
+                    "wires": [
+                        [
+                            "idName8"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName12",
+                    "type": "api-call-service",
+                    "z": "5d6cc12597828286",
+                    "name": "Media_play",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "media_player",
+                    "service": "play_media",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": ["entertainment_input_5"],
+                    "data": "{\t   \"media_content_id\":\"/media/local/audio_input_4\",\t   \"media_content_type\":\"audio/mp3\"\t}",
+                    "dataType": "jsonata",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [],
+                    "queue": "none",
+                    "x": 1130,
+                    "y": 160,
+                    "wires": [
+                        []
+                    ]
+                }
+            ]
+        }
+    },
     {
         "label": "WhenComplate",
         "description": "Notify when device complate",
-        "automationId": "smAutomate1",
+        "automationId": "smAutomate3",
         "template": [
             "plug",
-            "entertainment"
+            "entertainment",
+            "text"
         ],
         "data": {
             "id": "idName1",
@@ -26,7 +608,7 @@
                     "areaId": [],
                     "deviceId": [],
                     "entityId": [
-                        "entertainment_input"
+                        "entertainment_input_1"
                     ],
                     "data": "",
                     "dataType": "jsonata",
@@ -45,7 +627,7 @@
                     "type": "function",
                     "z": "d8d7872eb8dcad66",
                     "name": "SUM VAL",
-                    "func": "let powerValue = Math.floor(parseInt(msg.payload));\nlet getChecksum = context.get(\"checksum\");\nlet checksum = getChecksum ?? true;\nvar MAX = flow.get(\"MAX\") ?? 0;\nvar MIN = flow.get(\"MIN\") ?? 0;\nlet calvalue = flow.get(\"calvalue\");\n\nasync function _main_()\n{\n    if (calvalue == false) {\n        msg.value = powerValue;\n        msg.min = MIN;\n        msg.max = MAX;\n        if (MAX != 0) {\n            node.warn(\"MAX\");\n            if ((powerValue > MIN) && checksum == true) {\n            // if ((powerValue > MIN)) {\n                node.warn(\"loop1\");\n                checksum = false;\n                context.set(\"checksum\", checksum);\n                msg.payload = { \"data\": { \"message\": \"อุปกรณ์เริ่มต้นทำงานกรุณารอสักครู่\", \"language\": \"th\" } } // data collection\n                node.send(msg);\n            }\n            else if (powerValue == 0) {\n                await sleep(5000);\n                node.warn(\"loop2\");\n                checksum = true;\n                context.set(\"checksum\", checksum);\n                msg.reset = true;\n                msg.payload = { \"data\": { \"message\": \"อุปกรณ์ทำงานเสร็จแล้ว\", \"language\": \"th\" } }; // data collection\n                node.send(msg);\n            }\n            \n        }\n    }\n    else {\n        node.warn(\"loop3\");\n        await sleep(3000);\n        msg.payload = { \"data\": { \"message\": \"กำลังเรียนรู้ค่าพลังงานกรุณารอสักครู่\", \"language\": \"th\" } }\n        node.send(msg);\n    }\n}\n\nfunction sleep(ms) {\n    return new Promise((resolve) => {\n        setTimeout(resolve, ms);\n    });\n}\n_main_();",
+                    "func": "let powerValue = Math.floor(parseInt(msg.payload));\nlet getChecksum = context.get(\"checksum\");\nlet checksum = getChecksum ?? true;\nvar MAX = flow.get(\"MAX\") ?? 0;\nvar MIN = flow.get(\"MIN\") ?? 0;\nlet calvalue = flow.get(\"calvalue\");\n\nasync function _main_()\n{\n    if (calvalue == false) {\n        msg.value = powerValue;\n        msg.min = MIN;\n        msg.max = MAX;\n        if (MAX != 0) {\n            node.warn(\"MAX\");\n            if ((powerValue > MIN) && checksum == true) {\n            // if ((powerValue > MIN)) {\n                node.warn(\"loop1\");\n                checksum = false;\n                context.set(\"checksum\", checksum);\n                msg.payload = { \"data\": { \"message\": \"อุปกรณ์เริ่มต้นทำงานกรุณารอสักครู่\", \"language\": \"th\" } } // data collection\n                node.send(msg);\n            }\n            else if (powerValue == 0) {\n                await sleep(5000);\n                node.warn(\"loop2\");\n                checksum = true;\n                context.set(\"checksum\", checksum);\n                msg.reset = true;\n                msg.payload = { \"data\": { \"message\": \"text_input_2\", \"language\": \"th\" } }; // data collection\n                node.send(msg);\n            }\n            \n        }\n    }\n    else {\n        node.warn(\"loop3\");\n        await sleep(3000);\n        msg.payload = { \"data\": { \"message\": \"กำลังเรียนรู้ค่าพลังงานกรุณารอสักครู่\", \"language\": \"th\" } }\n        node.send(msg);\n    }\n}\n\nfunction sleep(ms) {\n    return new Promise((resolve) => {\n        setTimeout(resolve, ms);\n    });\n}\n_main_();",
                     "outputs": 1,
                     "noerr": 0,
                     "initialize": "",
@@ -155,7 +737,7 @@
                     "halt_if": "",
                     "halt_if_type": "str",
                     "halt_if_compare": "is",
-                    "entity_id": "plug_input",
+                    "entity_id": "plug_input_0",
                     "state_type": "str",
                     "blockInputOverrides": false,
                     "outputProperties": [
@@ -206,7 +788,7 @@
                             "value": ""
                         }
                     ],
-                    "entityidfilter": "plug_input",
+                    "entityidfilter": "plug_input_0",
                     "entityidfiltertype": "exact",
                     "outputinitially": true,
                     "state_type": "str",
@@ -301,101 +883,10 @@
         }
     },
     {
-        "nodeAmount": 4,
-        "label": "เปลี่ยนสีตามวันนะจร๊",
-        "description": "ChangeColors",
-        "type": "smAutomate2",
-        "template": [
-            "light"
-        ],
-        "data": {
-            "id": "idName1",
-            "label": "AutoChangColors",
-            "disabled": false,
-            "nodes": [
-                {
-                    "id": "idName2",
-                    "type": "inject",
-                    "z": "3b65baae780a771d",
-                    "name": "",
-                    "props": [
-                        {
-                            "p": "payload"
-                        },
-                        {
-                            "p": "topic",
-                            "vt": "str"
-                        }
-                    ],
-                    "repeat": "60",
-                    "crontab": "",
-                    "once": true,
-                    "onceDelay": 0.1,
-                    "topic": "",
-                    "payload": "",
-                    "payloadType": "date",
-                    "x": 390,
-                    "y": 160,
-                    "wires": [
-                        [
-                            "idName4"
-                        ]
-                    ]
-                },
-                {
-                    "id": "idName3",
-                    "type": "api-call-service",
-                    "z": "3b65baae780a771d",
-                    "name": "front",
-                    "server": "smartautomation",
-                    "version": 5,
-                    "debugenabled": false,
-                    "domain": "light",
-                    "service": "turn_on",
-                    "areaId": [],
-                    "deviceId": [],
-                    "entityId": [
-                        "light_input"
-                    ],
-                    "data": "",
-                    "dataType": "json",
-                    "mergeContext": "",
-                    "mustacheAltTags": false,
-                    "outputProperties": [],
-                    "queue": "none",
-                    "x": 830,
-                    "y": 160,
-                    "wires": [
-                        []
-                    ]
-                },
-                {
-                    "id": "idName4",
-                    "type": "function",
-                    "z": "3b65baae780a771d",
-                    "name": "function 12",
-                    "func": "let count_val = context.get(\"count\") ?? 0;\nlet valColor;\nlet arr = [\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [156, 136, 255] } }, // purper\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [0, 168, 255] } }, //blue\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [251, 197, 49] } }, // yellow\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [76, 209, 55] } }, // green\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [232, 65, 24] } }, // red\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [253, 121, 168] } },// pink\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [225, 112, 85] } }] // orange\n\nnode.warn(count_val);\nvalColor = arr[count_val];\nmsg.payload = valColor;\ncount_val = count_val>=6 ? count_val=0:count_val+1;\ncontext.set(\"count\", count_val);\nreturn msg;",
-                    "outputs": 1,
-                    "noerr": 0,
-                    "initialize": "",
-                    "finalize": "",
-                    "libs": [],
-                    "x": 630,
-                    "y": 160,
-                    "wires": [
-                        [
-                            "idName3"
-                        ]
-                    ]
-                }
-            ]
-        }
-    },
-    {
         "nodeAmount": 8,
         "label": "WaterLeak",
         "description": "WaterLeak",
-        "automationId": "smAutomate3",
+        "automationId": "smAutomate4",
         "template": [
             "sensor",
             "entertainment"
@@ -419,7 +910,7 @@
                     "areaId": [],
                     "deviceId": [],
                     "entityId": [
-                        "entertainment_input"
+                        "entertainment_input_1"
                     ],
                     "data": "",
                     "dataType": "jsonata",
@@ -473,7 +964,7 @@
                     "halt_if": "",
                     "halt_if_type": "str",
                     "halt_if_compare": "is",
-                    "entity_id": "sensor_input",
+                    "entity_id": "sensor_input_0",
                     "state_type": "str",
                     "blockInputOverrides": false,
                     "outputProperties": [
@@ -544,7 +1035,7 @@
                             "value": ""
                         }
                     ],
-                    "entityidfilter": "sensor_input",
+                    "entityidfilter": "sensor_input_0",
                     "entityidfiltertype": "exact",
                     "outputinitially": false,
                     "state_type": "str",
@@ -637,26 +1128,308 @@
         }
     },
     {
-        "nodeAmount": 10,
-        "label": "SmartSwitch*Air,TV,Light",
-        "description": "SmartSwitch*Air,TV,Light",
-        "automationId": "smAutomate4",
+        "nodeAmount": 4,
+        "label": "เปลี่ยนสีตามวันนะจร๊",
+        "description": "ChangeColors",
+        "type": "smAutomate5",
         "template": [
-            "sensor",
-            "light",
-            "climate",
-            "entertainment"
+            "light"
         ],
         "data": {
             "id": "idName1",
-            "label": "SmartSwitch*Air,TV,Light",
+            "label": "AutoChangColors",
             "disabled": false,
             "nodes": [
                 {
                     "id": "idName2",
+                    "type": "inject",
+                    "z": "3b65baae780a771d",
+                    "name": "",
+                    "props": [
+                        {
+                            "p": "payload"
+                        },
+                        {
+                            "p": "topic",
+                            "vt": "str"
+                        }
+                    ],
+                    "repeat": "60",
+                    "crontab": "",
+                    "once": true,
+                    "onceDelay": 0.1,
+                    "topic": "",
+                    "payload": "",
+                    "payloadType": "date",
+                    "x": 390,
+                    "y": 160,
+                    "wires": [
+                        [
+                            "idName5"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName3",
+                    "type": "api-call-service",
+                    "z": "3b65baae780a771d",
+                    "name": "front",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "light",
+                    "service": "turn_on",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "light_input_0"
+                    ],
+                    "data": "",
+                    "dataType": "json",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [],
+                    "queue": "none",
+                    "x": 830,
+                    "y": 160,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName4",
+                    "type": "function",
+                    "z": "3b65baae780a771d",
+                    "name": "function 12",
+                    "func": "let count_val = context.get(\"count\") ?? 0;\nlet valColor;\nlet arr = [\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [156, 136, 255] } }, // purper\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [0, 168, 255] } }, //blue\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [251, 197, 49] } }, // yellow\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [76, 209, 55] } }, // green\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [232, 65, 24] } }, // red\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [253, 121, 168] } },// pink\n   { \"data\": { \"brightness\": 255, \"rgb_color\": [225, 112, 85] } }] // orange\n\nnode.warn(count_val);\nvalColor = arr[count_val];\nmsg.payload = valColor;\ncount_val = count_val>=6 ? count_val=0:count_val+1;\ncontext.set(\"count\", count_val);\nreturn msg;",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 630,
+                    "y": 160,
+                    "wires": [
+                        [
+                            "idName3"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName5",
+                    "type": "time-range-switch",
+                    "z": "6de003de01d2e65b",
+                    "name": "",
+                    "lat": "",
+                    "lon": "",
+                    "startTime": "text_input_1",
+                    "endTime": "text_input_2",
+                    "startOffset": 0,
+                    "endOffset": 0,
+                    "x": 290,
+                    "y": 180,
+                    "wires": [
+                        [
+                            "idName4"
+                        ],
+                        []
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "nodeAmount": 29,
+        "label": "Sleep-Mode",
+        "description": "Sleep-Mode",
+        "automationId": "smAutomate6",
+        "hint": [
+            {
+                "name": "เริ่มนอน(ตย. 22:00)",
+                "index": 3
+            },
+            {
+                "name": "ตื่นนอน(ตย. 07:00)",
+                "index": 4
+            },
+            {
+                "name": "วันทำการ(ตย * หรือ 0123456)",
+                "index": 5
+            },
+            {
+                "name": "หน่วงเวลานอน(ตย 10)/นาที",
+                "index": 6
+            }
+        ],
+        "template": [
+            "sensor",
+            "sensor",
+            "light",
+            "text",
+            "text",
+            "text",
+            "text"
+        ],
+        "data": {
+            "id": "idName1",
+            "label": "Sleep-Mode",
+            "disabled": false,
+            "nodes": [
+                {
+                    "id": "idName4",
+                    "type": "function",
+                    "z": "01dffd8074d72417",
+                    "name": "sleep-mode",
+                    "func": "\nmsg.payload = true; \n\nglobal.set(\"sleep_mode.g\", true)\nreturn msg;",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 710,
+                    "y": 100,
+                    "wires": [
+                        [
+                            "idName23"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName5",
+                    "type": "trigger",
+                    "z": "01dffd8074d72417",
+                    "name": "",
+                    "op1": "",
+                    "op2": "true",
+                    "op1type": "nul",
+                    "op2type": "bool",
+                    "duration": "5",
+                    "extend": false,
+                    "overrideDelay": true,
+                    "units": "min",
+                    "reset": "off",
+                    "bytopic": "all",
+                    "topic": "topic",
+                    "outputs": 1,
+                    "x": 880,
+                    "y": 180,
+                    "wires": [
+                        [
+                            "idName19"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName6",
+                    "type": "api-call-service",
+                    "z": "01dffd8074d72417",
+                    "name": "toggle-wake-mode",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "light",
+                    "service": "toggle",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "light_input_2"
+                    ],
+                    "data": "{ \"brightness\": 100, \"color_temp\": 10 }",
+                    "dataType": "json",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [],
+                    "queue": "none",
+                    "x": 910,
+                    "y": 540,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName7",
+                    "type": "function",
+                    "z": "01dffd8074d72417",
+                    "name": "wake-up-mode",
+                    "func": "let check_sleep_mode = global.get(\"sleep_mode.g\") ?? false;\nmsg.payload = { \"data\": { \"brightness\": 200, \"color_temp\": 10 } } \nlet count_time = 10;\n\nvar fn = async function(arguments) {\n    if (check_sleep_mode) {\n        for (let index = 0; index <= count_time; index++) {\n            msg.payload = \"start\";\n            await sleep(800);\n            node.send(msg);\n        }\n        await sleep(1000);\n        msg.payload = \"end\";\n        node.send(msg);\n    }\n}\n\nfn();\nglobal.set(\"sleep_mode.a\", false);\nglobal.set(\"sleep_mode.g\", false);\nreturn msg;\n\nfunction sleep(ms) {\n    return new Promise((resolve) => {\n        setTimeout(resolve, ms);\n    });\n}",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 500,
+                    "y": 560,
+                    "wires": [
+                        [
+                            "idName8"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName8",
+                    "type": "switch",
+                    "z": "01dffd8074d72417",
+                    "name": "switch-wake-mode",
+                    "property": "payload",
+                    "propertyType": "msg",
+                    "rules": [
+                        {
+                            "t": "eq",
+                            "v": "start",
+                            "vt": "str"
+                        },
+                        {
+                            "t": "eq",
+                            "v": "end",
+                            "vt": "str"
+                        }
+                    ],
+                    "checkall": "true",
+                    "repair": false,
+                    "outputs": 2,
+                    "x": 710,
+                    "y": 560,
+                    "wires": [
+                        [
+                            "idName6"
+                        ],
+                        [
+                            "idName9"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName9",
+                    "type": "api-call-service",
+                    "z": "01dffd8074d72417",
+                    "name": "on-wake-mode",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "light",
+                    "service": "turn_on",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "light_input_2"
+                    ],
+                    "data": "",
+                    "dataType": "jsonata",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [],
+                    "queue": "none",
+                    "x": 900,
+                    "y": 580,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName10",
                     "type": "server-state-changed",
-                    "z": "01ed365d8c740548",
-                    "name": "Switch",
+                    "z": "01dffd8074d72417",
+                    "name": "motion",
                     "server": "smartautomation",
                     "version": 4,
                     "exposeToHomeAssistant": false,
@@ -670,16 +1443,19 @@
                             "value": ""
                         }
                     ],
-                    "entityidfilter": "sensor_input",
-                    "entityidfiltertype": "exact",
-                    "outputinitially": true,
+                    "entityidfilter": [
+                        "sensor_input_0",
+                        "sensor_input_1"
+                    ],
+                    "entityidfiltertype": "list",
+                    "outputinitially": false,
                     "state_type": "str",
-                    "haltifstate": "",
+                    "haltifstate": "on",
                     "halt_if_type": "str",
                     "halt_if_compare": "is",
-                    "outputs": 1,
-                    "output_only_on_state_change": true,
-                    "for": 0,
+                    "outputs": 2,
+                    "output_only_on_state_change": false,
+                    "for": "0",
                     "forType": "num",
                     "forUnits": "minutes",
                     "ignorePrevStateNull": false,
@@ -707,85 +1483,601 @@
                             "valueType": "triggerId"
                         }
                     ],
-                    "x": 310,
-                    "y": 240,
+                    "x": 250,
+                    "y": 360,
                     "wires": [
                         [
-                            "idName3"
+                            "idName16",
+                            "idName18"
+                        ],
+                        []
+                    ]
+                },
+                {
+                    "id": "idName11",
+                    "type": "api-current-state",
+                    "z": "01dffd8074d72417",
+                    "name": "",
+                    "server": "smartautomation",
+                    "version": 3,
+                    "outputs": 1,
+                    "halt_if": "",
+                    "halt_if_type": "str",
+                    "halt_if_compare": "is",
+                    "entity_id": "{{payload}}",
+                    "state_type": "str",
+                    "blockInputOverrides": false,
+                    "outputProperties": [
+                        {
+                            "property": "payload",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "entityState"
+                        },
+                        {
+                            "property": "data",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "entity"
+                        }
+                    ],
+                    "for": "0",
+                    "forType": "num",
+                    "forUnits": "minutes",
+                    "override_topic": false,
+                    "state_location": "payload",
+                    "override_payload": "msg",
+                    "entity_location": "data",
+                    "override_data": "msg",
+                    "x": 710,
+                    "y": 440,
+                    "wires": [
+                        [
+                            "idName15"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName12",
+                    "type": "function",
+                    "z": "01dffd8074d72417",
+                    "name": "send-entity",
+                    "func": "let sleep_check = global.get(\"sleep_mode.a\") ?? false;\n\nlet sensor_arr = [\"binary_sensor.0x00158d0007753005_occupancy\", \n    \"binary_sensor.0x00124b002513da02_occupancy\"];\n\nvar fn = async function (arguments) {\n    for (let x in sensor_arr) {\n        if (sensor_arr.hasOwnProperty(x)) {\n            msg.payload = sensor_arr[x];\n            node.send(msg)\n            await sleep(1000);\n        }\n    }\n}\nif (sleep_check) {\n    fn();\n    return msg;\n}\nfunction sleep(ms) {\n    return new Promise((resolve) => {\n        setTimeout(resolve, ms);\n    });\n}",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 490,
+                    "y": 440,
+                    "wires": [
+                        [
+                            "idName11"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName13",
+                    "type": "api-call-service",
+                    "z": "01dffd8074d72417",
+                    "name": "off-sleep-mode",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "light",
+                    "service": "turn_off",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "light_input_2"
+                    ],
+                    "data": "",
+                    "dataType": "jsonata",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [],
+                    "queue": "none",
+                    "x": 1260,
+                    "y": 440,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName14",
+                    "type": "inject",
+                    "z": "01dffd8074d72417",
+                    "name": "interval 50 sec",
+                    "props": [
+                        {
+                            "p": "payload"
+                        },
+                        {
+                            "p": "topic",
+                            "vt": "str"
+                        }
+                    ],
+                    "repeat": "50",
+                    "crontab": "",
+                    "once": false,
+                    "onceDelay": 0.1,
+                    "topic": "",
+                    "payload": "",
+                    "payloadType": "date",
+                    "x": 300,
+                    "y": 440,
+                    "wires": [
+                        [
+                            "idName12"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName15",
+                    "type": "trigger",
+                    "z": "01dffd8074d72417",
+                    "name": "",
+                    "op1": "",
+                    "op2": "",
+                    "op1type": "nul",
+                    "op2type": "payl",
+                    "duration": "text_input_6",
+                    "extend": false,
+                    "overrideDelay": false,
+                    "units": "min",
+                    "reset": "on",
+                    "bytopic": "all",
+                    "topic": "topic",
+                    "outputs": 1,
+                    "x": 910,
+                    "y": 440,
+                    "wires": [
+                        [
+                            "idName16"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName16",
+                    "type": "trigger",
+                    "z": "01dffd8074d72417",
+                    "name": "",
+                    "op1": "",
+                    "op2": "true",
+                    "op1type": "str",
+                    "op2type": "bool",
+                    "duration": "0",
+                    "extend": false,
+                    "overrideDelay": false,
+                    "units": "min",
+                    "reset": "on",
+                    "bytopic": "all",
+                    "topic": "topic",
+                    "outputs": 1,
+                    "x": 1080,
+                    "y": 440,
+                    "wires": [
+                        [
+                            "idName13"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName17",
+                    "type": "api-call-service",
+                    "z": "01dffd8074d72417",
+                    "name": "",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "light",
+                    "service": "turn_on",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "light_input_2"
+                    ],
+                    "data": "{ \"brightness\": 2, \"color_temp\": 500 }",
+                    "dataType": "jsonata",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [
+                        {
+                            "property": "toggle",
+                            "propertyType": "msg",
+                            "value": "1",
+                            "valueType": "num"
+                        }
+                    ],
+                    "queue": "none",
+                    "x": 670,
+                    "y": 340,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName18",
+                    "type": "function",
+                    "z": "01dffd8074d72417",
+                    "name": "if sleep mode",
+                    "func": "let sleep_check = global.get(\"sleep_mode.a\") ?? false;\n\nif (sleep_check) {\n    msg.payload =true;\n    return msg;\n}\n",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 480,
+                    "y": 340,
+                    "wires": [
+                        [
+                            "idName17"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName19",
+                    "type": "function",
+                    "z": "01dffd8074d72417",
+                    "name": "set sleep_mode.c",
+                    "func": "global.set(\"sleep_mode.a\", true)\nreturn msg;\n",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 1070,
+                    "y": 180,
+                    "wires": [
+                        [
+                            "idName24"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName20",
+                    "type": "function",
+                    "z": "01dffd8074d72417",
+                    "name": "time-custum",
+                    "func": "const in_put_time = \"00:20\";\nconst words = in_put_time.split(':');\n\nconst input_hour = parseInt(words[0]);\nconst input_min = parseInt(words[1]);\n\nnode.warn('input_hour ' + input_hour + 'input_min: ' + input_min );\nlet d = new Date();\nlet get_day = d.getDay().toString();\n// *************************************\nlet curr_hour = d.getHours();\n// curr_hour = curr_hour < 10 ? \"0\" + curr_hour : curr_hour;\nlet curr_min = d.getMinutes();\n// let min = curr_min < 10 ? \"0\" + curr_min : curr_min;\n\n// let current_time = curr_hour + \":\" + min;\n// node.warn(current_time);\nlet in_put_day = \"text_input_5\";\nlet day = in_put_day === \"*\" ? \"0123456\" : in_put_day;\n\nconst usingSplit = day.split('');\nconst usingSpread = [...day];\nconst usingArrayFrom = Array.from(day);\nconst usingObjectAssign = Object.assign([], day);\n\nfunction checkDays(x, y) {\n    node.warn(x.indexOf(y, 0));\n    if (x.indexOf(y, 0) >= 0) {\n        return true;\n    }\n    else {\n        return false;\n    }\n}\n// if (input_hour === curr_hour && input_min === curr_min) {\n    let checkSum = checkDays(usingObjectAssign, get_day);\n    if (checkSum) {\n        msg.payload = false;\n        return msg;\n    }\n\n// }",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 330,
+                    "y": 140,
+                    "wires": [
+                        [
+                            "idName27"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName21",
+                    "type": "inject",
+                    "z": "01dffd8074d72417",
+                    "name": "",
+                    "props": [
+                        {
+                            "p": "payload"
+                        },
+                        {
+                            "p": "topic",
+                            "vt": "str"
+                        }
+                    ],
+                    "repeat": "30",
+                    "crontab": "",
+                    "once": false,
+                    "onceDelay": 0.1,
+                    "topic": "",
+                    "payload": "",
+                    "payloadType": "date",
+                    "x": 150,
+                    "y": 100,
+                    "wires": [
+                        [
+                            "idName26"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName22",
+                    "type": "function",
+                    "z": "01dffd8074d72417",
+                    "name": "time-custum",
+                    "func": "const in_put_time = \"00:20\";\nconst words = in_put_time.split(':');\n\nconst input_hour = parseInt(words[0]);\nconst input_min = parseInt(words[1]);\n\nnode.warn('input_hour ' + input_hour + 'input_min: ' + input_min );\nlet d = new Date();\nlet get_day = d.getDay().toString();\n// *************************************\nlet curr_hour = d.getHours();\n// curr_hour = curr_hour < 10 ? \"0\" + curr_hour : curr_hour;\nlet curr_min = d.getMinutes();\n// let min = curr_min < 10 ? \"0\" + curr_min : curr_min;\n\n// let current_time = curr_hour + \":\" + min;\n// node.warn(current_time);\nlet in_put_day = \"text_input_5\";\nlet day = in_put_day === \"*\" ? \"0123456\" : in_put_day;\n\nconst usingSplit = day.split('');\nconst usingSpread = [...day];\nconst usingArrayFrom = Array.from(day);\nconst usingObjectAssign = Object.assign([], day);\n\nfunction checkDays(x, y) {\n    node.warn(x.indexOf(y, 0));\n    if (x.indexOf(y, 0) >= 0) {\n        return true;\n    }\n    else {\n        return false;\n    }\n}\n// if (input_hour === curr_hour && input_min === curr_min) {\n    let checkSum = checkDays(usingObjectAssign, get_day);\n    if (checkSum) {\n        msg.payload = true;\n        return msg;\n    }\n\n// }",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 330,
+                    "y": 560,
+                    "wires": [
+                        [
+                            "idName7",
+                            "idName27"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName23",
+                    "type": "api-call-service",
+                    "z": "01dffd8074d72417",
+                    "name": "on-sleep-mode",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "light",
+                    "service": "turn_on",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "light_input_2"
+                    ],
+                    "data": "{\t   \"brightness\":2\t}",
+                    "dataType": "jsonata",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [],
+                    "queue": "none",
+                    "x": 700,
+                    "y": 180,
+                    "wires": [
+                        [
+                            "idName5"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName24",
+                    "type": "api-call-service",
+                    "z": "01dffd8074d72417",
+                    "name": "off-sleep-mode",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "light",
+                    "service": "turn_off",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "light_input_2"
+                    ],
+                    "data": "",
+                    "dataType": "jsonata",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [],
+                    "queue": "none",
+                    "x": 1260,
+                    "y": 180,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName25",
+                    "type": "function",
+                    "z": "01dffd8074d72417",
+                    "name": "out sleep mode",
+                    "func": "global.set(\"sleep_mode.a\", false);\nglobal.set(\"sleep_mode.g\", false);\nmsg.payload =  \"off\";\n    return msg;\n\n",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 740,
+                    "y": 260,
+                    "wires": [
+                        [
+                            "idName5",
+                            "idName24"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName26",
+                    "type": "time-range-switch",
+                    "z": "01dffd8074d72417",
+                    "name": "",
+                    "lat": "",
+                    "lon": "",
+                    "startTime": "text_input_3",
+                    "endTime": "text_input_4",
+                    "startOffset": 0,
+                    "endOffset": 0,
+                    "x": 150,
+                    "y": 160,
+                    "wires": [
+                        [
+                            "idName20"
+                        ],
+                        [
+                            "idName22"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName27",
+                    "type": "trigger",
+                    "z": "01dffd8074d72417",
+                    "name": "",
+                    "op1": "true",
+                    "op2": "true",
+                    "op1type": "bool",
+                    "op2type": "bool",
+                    "duration": "0",
+                    "extend": false,
+                    "overrideDelay": false,
+                    "units": "min",
+                    "reset": "true",
+                    "bytopic": "all",
+                    "topic": "topic",
+                    "outputs": 1,
+                    "x": 500,
+                    "y": 140,
+                    "wires": [
+                        [
+                            "idName4"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName2",
+                    "type": "http in",
+                    "z": "4d50196287140221",
+                    "name": "on-mode",
+                    "url": "/sleep-mode",
+                    "method": "get",
+                    "upload": false,
+                    "swaggerDoc": "",
+                    "x": 380,
+                    "y": 680,
+                    "wires": [
+                        [
+                            "idName3",
+                            "idName4"
                         ]
                     ]
                 },
                 {
                     "id": "idName3",
-                    "type": "switch",
-                    "z": "01ed365d8c740548",
+                    "type": "http response",
+                    "z": "4d50196287140221",
                     "name": "",
-                    "property": "payload",
-                    "propertyType": "msg",
-                    "rules": [
-                        {
-                            "t": "eq",
-                            "v": "1_single",
-                            "vt": "str"
-                        },
-                        {
-                            "t": "eq",
-                            "v": "1_double",
-                            "vt": "str"
-                        },
-                        {
-                            "t": "eq",
-                            "v": "2_single",
-                            "vt": "str"
-                        },
-                        {
-                            "t": "eq",
-                            "v": "2_double",
-                            "vt": "str"
-                        },
-                        {
-                            "t": "eq",
-                            "v": "3_single",
-                            "vt": "str"
-                        },
-                        {
-                            "t": "eq",
-                            "v": "3_double",
-                            "vt": "str"
-                        },
-                        {
-                            "t": "eq",
-                            "v": "4_single",
-                            "vt": "str"
-                        }
-                    ],
-                    "checkall": "true",
-                    "repair": false,
-                    "outputs": 7,
-                    "x": 430,
-                    "y": 240,
+                    "statusCode": "",
+                    "headers": {},
+                    "x": 510,
+                    "y": 680,
+                    "wires": []
+                },
+                {
+                    "id": "idName28",
+                    "type": "http in",
+                    "z": "4d50196287140221",
+                    "name": "off-mode",
+                    "url": "/sleep-mode-off",
+                    "method": "get",
+                    "upload": false,
+                    "swaggerDoc": "",
+                    "x": 380,
+                    "y": 740,
                     "wires": [
                         [
-                            "idName5",
-                            "idName7"
-                        ],
-                        [
-                            "idName5",
-                            "idName7"
-                        ],
+                            "idName29",
+                            "idName25"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName29",
+                    "type": "http response",
+                    "z": "4d50196287140221",
+                    "name": "",
+                    "statusCode": "",
+                    "headers": {},
+                    "x": 512,
+                    "y": 747,
+                    "wires": []
+                }
+            ]
+        }
+    },
+    {
+        "nodeAmount": 15,
+        "label": "Eco-Mode-For-Office",
+        "description": "Eco-Mode-For-Office",
+        "automationId": "smAutomate7",
+        "template": [
+            "sensor",
+            "sensor",
+            "sensor",
+            "sensor",
+            "sensor",
+            "sensor",
+            "sensor",
+            "plug",
+            "climate",
+            "light"
+        ],
+        "data": {
+            "id": "idName1",
+            "label": "Eco-mode-office",
+            "disabled": false,
+            "nodes": [
+                {
+                    "id": "idName2",
+                    "type": "server-state-changed",
+                    "z": "c1bd95e6ce9cc5ad",
+                    "name": "motion",
+                    "server": "smartautomation",
+                    "version": 4,
+                    "exposeToHomeAssistant": false,
+                    "haConfig": [
+                        {
+                            "property": "name",
+                            "value": ""
+                        },
+                        {
+                            "property": "icon",
+                            "value": ""
+                        }
+                    ],
+                    "entityidfilter": [
+                        "sensor_input_0",
+                        "sensor_input_1",
+                        "sensor_input_2",
+                        "sensor_input_3",
+                        "sensor_input_4",
+                        "sensor_input_5",
+                        "sensor_input_6"
+                    ],
+                    "entityidfiltertype": "list",
+                    "outputinitially": false,
+                    "state_type": "str",
+                    "haltifstate": "on",
+                    "halt_if_type": "str",
+                    "halt_if_compare": "is",
+                    "outputs": 2,
+                    "output_only_on_state_change": true,
+                    "for": "0",
+                    "forType": "num",
+                    "forUnits": "minutes",
+                    "ignorePrevStateNull": false,
+                    "ignorePrevStateUnknown": false,
+                    "ignorePrevStateUnavailable": false,
+                    "ignoreCurrentStateUnknown": false,
+                    "ignoreCurrentStateUnavailable": false,
+                    "outputProperties": [
+                        {
+                            "property": "payload",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "entityState"
+                        },
+                        {
+                            "property": "data",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "eventData"
+                        },
+                        {
+                            "property": "topic",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "triggerId"
+                        }
+                    ],
+                    "x": 130,
+                    "y": 200,
+                    "wires": [
                         [
                             "idName7",
-                            "idName5"
-                        ],
-                        [
-                            "idName7",
-                            "idName5"
-                        ],
-                        [
-                            "idName9"
-                        ],
-                        [
-                            "idName9"
+                            "idName9",
+                            "idName8"
                         ],
                         [
                             "idName10"
@@ -793,9 +2085,269 @@
                     ]
                 },
                 {
+                    "id": "idName3",
+                    "type": "api-current-state",
+                    "z": "c1bd95e6ce9cc5ad",
+                    "name": "",
+                    "server": "smartautomation",
+                    "version": 3,
+                    "outputs": 1,
+                    "halt_if": "",
+                    "halt_if_type": "str",
+                    "halt_if_compare": "is",
+                    "entity_id": "{{payload}}",
+                    "state_type": "str",
+                    "blockInputOverrides": false,
+                    "outputProperties": [
+                        {
+                            "property": "payload",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "entityState"
+                        },
+                        {
+                            "property": "data",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "entity"
+                        }
+                    ],
+                    "for": "0",
+                    "forType": "num",
+                    "forUnits": "minutes",
+                    "override_topic": false,
+                    "state_location": "payload",
+                    "override_payload": "msg",
+                    "entity_location": "data",
+                    "override_data": "msg",
+                    "x": 530,
+                    "y": 300,
+                    "wires": [
+                        [
+                            "idName6"
+                        ]
+                    ]
+                },
+                {
                     "id": "idName4",
+                    "type": "function",
+                    "z": "c1bd95e6ce9cc5ad",
+                    "name": "send-entityId",
+                    "func": "\n\nlet sensor_arr =\n[\"sensor_input_5\",\n\"sensor_input_4\",\n\"sensor_input_6\",\n\"sensor_input_2\",\n\"sensor_input_3\",\n\"sensor_input_0\",\n\"sensor_input_1\"];\nvar fn = async function (arguments) {\n    for (let x in sensor_arr) {\n        if (sensor_arr.hasOwnProperty(x)) {\n            msg.payload = sensor_arr[x];\n            node.send(msg)\n            await sleep(1000);\n        }\n    } \n}\nfn();\n\nfunction sleep(ms) {\n    return new Promise((resolve) => {\n        setTimeout(resolve, ms);\n    });\n}",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 330,
+                    "y": 300,
+                    "wires": [
+                        [
+                            "idName3"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName5",
+                    "type": "inject",
+                    "z": "c1bd95e6ce9cc5ad",
+                    "name": "interval 160 sec",
+                    "props": [
+                        {
+                            "p": "payload"
+                        },
+                        {
+                            "p": "topic",
+                            "vt": "str"
+                        }
+                    ],
+                    "repeat": "160",
+                    "crontab": "",
+                    "once": false,
+                    "onceDelay": 0.1,
+                    "topic": "",
+                    "payload": "",
+                    "payloadType": "date",
+                    "x": 150,
+                    "y": 300,
+                    "wires": [
+                        [
+                            "idName4"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName6",
+                    "type": "trigger",
+                    "z": "c1bd95e6ce9cc5ad",
+                    "name": "",
+                    "op1": "",
+                    "op2": "",
+                    "op1type": "nul",
+                    "op2type": "payl",
+                    "duration": "3",
+                    "extend": false,
+                    "overrideDelay": false,
+                    "units": "min",
+                    "reset": "on",
+                    "bytopic": "all",
+                    "topic": "topic",
+                    "outputs": 1,
+                    "x": 730,
+                    "y": 300,
+                    "wires": [
+                        [
+                            "idName7"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName7",
+                    "type": "trigger",
+                    "z": "c1bd95e6ce9cc5ad",
+                    "name": "",
+                    "op1": "off",
+                    "op2": "true",
+                    "op1type": "str",
+                    "op2type": "bool",
+                    "duration": "0",
+                    "extend": false,
+                    "overrideDelay": false,
+                    "units": "min",
+                    "reset": "on",
+                    "bytopic": "all",
+                    "topic": "topic",
+                    "outputs": 1,
+                    "x": 900,
+                    "y": 300,
+                    "wires": [
+                        [
+                            "idName14",
+                            "idName13",
+                            "idName15"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName8",
+                    "type": "api-call-service",
+                    "z": "c1bd95e6ce9cc5ad",
+                    "name": "",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "light",
+                    "service": "turn_on",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "light_input_9"
+                    ],
+                    "data": "",
+                    "dataType": "jsonata",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [
+                        {
+                            "property": "toggle",
+                            "propertyType": "msg",
+                            "value": "1",
+                            "valueType": "num"
+                        }
+                    ],
+                    "queue": "none",
+                    "x": 370,
+                    "y": 160,
+                    "wires": [
+                        [
+                            "idName10"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName9",
+                    "type": "api-call-service",
+                    "z": "c1bd95e6ce9cc5ad",
+                    "name": "",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "switch",
+                    "service": "turn_on",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "plug_input_7"
+                    ],
+                    "data": "",
+                    "dataType": "jsonata",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [
+                        {
+                            "property": "toggle",
+                            "propertyType": "msg",
+                            "value": "1",
+                            "valueType": "num"
+                        }
+                    ],
+                    "queue": "none",
+                    "x": 380,
+                    "y": 120,
+                    "wires": [
+                        [
+                            "idName10"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName10",
+                    "type": "trigger",
+                    "z": "c1bd95e6ce9cc5ad",
+                    "name": "",
+                    "op1": "",
+                    "op2": "",
+                    "op1type": "nul",
+                    "op2type": "pay",
+                    "duration": "3",
+                    "extend": false,
+                    "overrideDelay": false,
+                    "units": "min",
+                    "reset": "off",
+                    "bytopic": "all",
+                    "topic": "topic",
+                    "outputs": 1,
+                    "x": 590,
+                    "y": 180,
+                    "wires": [
+                        [
+                            "idName15"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName11",
+                    "type": "function",
+                    "z": "c1bd95e6ce9cc5ad",
+                    "name": "input remote",
+                    "func": "let entityId = \"climate_input_8\";\nlet toggle = msg.toggle;\n\nmsg.topic = \"ir_remote/send/air\";\nmsg.payload = { \"logic\": toggle, \"friendly_name\": entityId }\n \n\nreturn msg;",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 950,
+                    "y": 180,
+                    "wires": [
+                        [
+                            "idName12"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName12",
                     "type": "mqtt out",
-                    "z": "01ed365d8c740548",
+                    "z": "c1bd95e6ce9cc5ad",
                     "name": "",
                     "topic": "",
                     "qos": "",
@@ -806,125 +2358,14 @@
                     "correl": "",
                     "expiry": "",
                     "broker": "aabbcc",
-                    "x": 770,
-                    "y": 220,
+                    "x": 1090,
+                    "y": 180,
                     "wires": []
                 },
                 {
-                    "id": "idName5",
-                    "type": "function",
-                    "z": "01ed365d8c740548",
-                    "name": "input remote",
-                    "func": "let entityId = \"climate_input\";\nlet numSwitch = msg.payload;\n\n\n\nswitch (numSwitch) {\n    case \"1_single\":\n        msg.topic = \"ir_remote/send/air\";\n        msg.payload = { \"logic\": 1, \"friendly_name\": entityId }\n        break;\n    case \"1_double\":\n        msg.topic = \"ir_remote/send/air\";\n        msg.payload = { \"logic\": 0, \"friendly_name\": entityId }\n        break;\n    case \"2_single\":\n        msg.topic = \"ir_remote/send/tv\";\n        msg.payload = { \"logic\": 1, \"friendly_name\": entityId }\n        break;\n    case \"2_double\":\n        msg.topic = \"ir_remote/send/tv\";\n        msg.payload = { \"logic\": 0, \"friendly_name\": entityId }\n        break;\n    default:  \n}\nreturn msg;",
-                    "outputs": 1,
-                    "noerr": 0,
-                    "initialize": "",
-                    "finalize": "",
-                    "libs": [],
-                    "x": 610,
-                    "y": 220,
-                    "wires": [
-                        [
-                            "idName4"
-                        ]
-                    ]
-                },
-                {
-                    "id": "idName6",
+                    "id": "idName13",
                     "type": "api-call-service",
-                    "z": "01ed365d8c740548",
-                    "name": "",
-                    "server": "smartautomation",
-                    "version": 5,
-                    "debugenabled": false,
-                    "domain": "tts",
-                    "service": "google_translate_say",
-                    "areaId": [],
-                    "deviceId": [],
-                    "entityId": [
-                        "entertainment_input"
-                    ],
-                    "data": "",
-                    "dataType": "jsonata",
-                    "mergeContext": "",
-                    "mustacheAltTags": false,
-                    "outputProperties": [],
-                    "queue": "none",
-                    "x": 830,
-                    "y": 180,
-                    "wires": [
-                        []
-                    ]
-                },
-                {
-                    "id": "idName7",
-                    "type": "function",
-                    "z": "01ed365d8c740548",
-                    "name": "google nest",
-                    "func": "\nlet numSwitch = msg.payload;\n\nswitch (numSwitch) {\n    case \"1_single\":\n        msg.payload = { \"data\": { \"message\": \"ระบบกำลังเปิดแอร์\", \"language\": \"th\" } }\n        break;\n    case \"1_double\":\n        msg.payload = { \"data\": { \"message\": \"ระบบกำลังปิดแอร์\", \"language\": \"th\" } }\n        break;\n    case \"2_single\":\n        msg.topic = \"ir_remote/send/tv\";\n        msg.payload = { \"data\": { \"message\": \"ระบบกำลังเปิดทีวี\", \"language\": \"th\" } }\n        break;\n    case \"2_double\":\n        msg.topic = \"ir_remote/send/tv\";\n        msg.payload = { \"data\": { \"message\": \"ระบบกำลังปิดทีวี\", \"language\": \"th\" } }\n        break;\n    default:  \n}\nreturn msg;",
-                    "outputs": 1,
-                    "noerr": 0,
-                    "initialize": "",
-                    "finalize": "",
-                    "libs": [],
-                    "x": 610,
-                    "y": 180,
-                    "wires": [
-                        [
-                            "idName6"
-                        ]
-                    ]
-                },
-                {
-                    "id": "idName8",
-                    "type": "api-call-service",
-                    "z": "01ed365d8c740548",
-                    "name": "",
-                    "server": "smartautomation",
-                    "version": 5,
-                    "debugenabled": false,
-                    "domain": "light",
-                    "service": "turn_on",
-                    "areaId": [],
-                    "deviceId": [],
-                    "entityId": [
-                        "light_input"
-                    ],
-                    "data": "",
-                    "dataType": "jsonata",
-                    "mergeContext": "",
-                    "mustacheAltTags": false,
-                    "outputProperties": [],
-                    "queue": "none",
-                    "x": 790,
-                    "y": 260,
-                    "wires": [
-                        []
-                    ]
-                },
-                {
-                    "id": "idName9",
-                    "type": "function",
-                    "z": "01ed365d8c740548",
-                    "name": "light switch",
-                    "func": "let count_val = context.get(\"count\") ?? 0;\nlet brightness = context.get(\"brightness\") ?? 60;\nlet valColor;\nlet arr = [\n    { \"data\": { \"brightness_pct\": brightness, \"color_temp\": 500 } }, \n    { \"data\": { \"brightness_pct\": brightness, \"color_temp\": 300 } }, \n    { \"data\": { \"brightness_pct\": brightness, \"color_temp\": 50 } },\n    { \"data\": { \"brightness_pct\": brightness}} // yellow\n] // orange\nlet numSwitch = msg.payload;\nswitch (numSwitch) {\n    case \"3_single\":\n        node.warn(brightness);\n        if (brightness >= 100)\n        {\n            brightness = 0;\n        }\n        brightness = brightness + 20;\n        valColor = arr[3];\n        msg.payload = valColor;\n        context.set(\"brightness\", brightness );\n        break;\n    case \"3_double\":\n        count_val = count_val >=2 ? count_val = 0 : count_val + 1;\n        node.warn(\"3_double: \"+brightness);\n        node.warn(count_val);\n        valColor = arr[count_val];\n        msg.payload = valColor;\n        context.set(\"count\", count_val);\n        break;\n    default:  \n}\nreturn msg;",
-                    "outputs": 1,
-                    "noerr": 0,
-                    "initialize": "",
-                    "finalize": "",
-                    "libs": [],
-                    "x": 610,
-                    "y": 260,
-                    "wires": [
-                        [
-                            "idName8"
-                        ]
-                    ]
-                },
-                {
-                    "id": "idName10",
-                    "type": "api-call-service",
-                    "z": "01ed365d8c740548",
+                    "z": "c1bd95e6ce9cc5ad",
                     "name": "",
                     "server": "smartautomation",
                     "version": 5,
@@ -934,7 +2375,248 @@
                     "areaId": [],
                     "deviceId": [],
                     "entityId": [
-                        "light_input"
+                        "light_input_9"
+                    ],
+                    "data": "",
+                    "dataType": "jsonata",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [
+                        {
+                            "property": "toggle",
+                            "propertyType": "msg",
+                            "value": "0",
+                            "valueType": "num"
+                        }
+                    ],
+                    "queue": "none",
+                    "x": 1130,
+                    "y": 300,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName14",
+                    "type": "api-call-service",
+                    "z": "c1bd95e6ce9cc5ad",
+                    "name": "",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "switch",
+                    "service": "turn_off",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "plug_input_7"
+                    ],
+                    "data": "",
+                    "dataType": "jsonata",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [
+                        {
+                            "property": "toggle",
+                            "propertyType": "msg",
+                            "value": "0",
+                            "valueType": "num"
+                        }
+                    ],
+                    "queue": "none",
+                    "x": 1140,
+                    "y": 260,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName15",
+                    "type": "trigger",
+                    "z": "c1bd95e6ce9cc5ad",
+                    "name": "",
+                    "op1": "true",
+                    "op2": "true",
+                    "op1type": "bool",
+                    "op2type": "bool",
+                    "duration": "0",
+                    "extend": false,
+                    "overrideDelay": false,
+                    "units": "min",
+                    "reset": "off",
+                    "bytopic": "all",
+                    "topic": "topic",
+                    "outputs": 1,
+                    "x": 780,
+                    "y": 180,
+                    "wires": [
+                        [
+                            "idName11"
+                        ]
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "nodeAmount": 11,
+        "label": "Eco-mode",
+        "description": "Eco-mode",
+        "automationId": "smAutomate8",
+        "template": [
+            "sensor",
+            "sensor",
+            "light"
+        ],
+        "data": {
+            "id": "idName1",
+            "label": "Eco-mode",
+            "disabled": false,
+            "nodes": [
+                {
+                    "id": "idName2",
+                    "type": "server-state-changed",
+                    "z": "34592337ccf0a996",
+                    "name": "motion",
+                    "server": "smartautomation",
+                    "version": 4,
+                    "exposeToHomeAssistant": false,
+                    "haConfig": [
+                        {
+                            "property": "name",
+                            "value": ""
+                        },
+                        {
+                            "property": "icon",
+                            "value": ""
+                        }
+                    ],
+                    "entityidfilter": [
+                        "sensor_input_0",
+                        "sensor_input_1"
+                    ],
+                    "entityidfiltertype": "list",
+                    "outputinitially": false,
+                    "state_type": "str",
+                    "haltifstate": "on",
+                    "halt_if_type": "str",
+                    "halt_if_compare": "is",
+                    "outputs": 2,
+                    "output_only_on_state_change": false,
+                    "for": "0",
+                    "forType": "num",
+                    "forUnits": "minutes",
+                    "ignorePrevStateNull": false,
+                    "ignorePrevStateUnknown": false,
+                    "ignorePrevStateUnavailable": false,
+                    "ignoreCurrentStateUnknown": false,
+                    "ignoreCurrentStateUnavailable": false,
+                    "outputProperties": [
+                        {
+                            "property": "payload",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "entityState"
+                        },
+                        {
+                            "property": "data",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "eventData"
+                        },
+                        {
+                            "property": "topic",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "triggerId"
+                        }
+                    ],
+                    "x": 150,
+                    "y": 180,
+                    "wires": [
+                        [
+                            "idName12"
+                        ],
+                        []
+                    ]
+                },
+                {
+                    "id": "idName3",
+                    "type": "api-current-state",
+                    "z": "34592337ccf0a996",
+                    "name": "",
+                    "server": "smartautomation",
+                    "version": 3,
+                    "outputs": 1,
+                    "halt_if": "",
+                    "halt_if_type": "str",
+                    "halt_if_compare": "is",
+                    "entity_id": "{{payload}}",
+                    "state_type": "str",
+                    "blockInputOverrides": false,
+                    "outputProperties": [
+                        {
+                            "property": "payload",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "entityState"
+                        },
+                        {
+                            "property": "data",
+                            "propertyType": "msg",
+                            "value": "",
+                            "valueType": "entity"
+                        }
+                    ],
+                    "for": "0",
+                    "forType": "num",
+                    "forUnits": "minutes",
+                    "override_topic": false,
+                    "state_location": "payload",
+                    "override_payload": "msg",
+                    "entity_location": "data",
+                    "override_data": "msg",
+                    "x": 550,
+                    "y": 340,
+                    "wires": [
+                        [
+                            "idName11"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName4",
+                    "type": "function",
+                    "z": "34592337ccf0a996",
+                    "name": "send-entityId",
+                    "func": "\n\nlet sensor_arr = [\"sensor_input_0\", \"sensor_input_1\"];\n\nvar fn = async function (arguments) {\n    for (let x in sensor_arr) {\n        if (sensor_arr.hasOwnProperty(x)) {\n            msg.payload = sensor_arr[x];\n            node.send(msg)\n            await sleep(1000);\n        }\n    } \n}\nfn();\n\nfunction sleep(ms) {\n    return new Promise((resolve) => {\n        setTimeout(resolve, ms);\n    });\n}",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 330,
+                    "y": 340,
+                    "wires": [
+                        [
+                            "idName3"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName5",
+                    "type": "api-call-service",
+                    "z": "34592337ccf0a996",
+                    "name": "off-sleep-mode",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "light",
+                    "service": "turn_off",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "light_input_2"
                     ],
                     "data": "",
                     "dataType": "jsonata",
@@ -942,9 +2624,222 @@
                     "mustacheAltTags": false,
                     "outputProperties": [],
                     "queue": "none",
-                    "x": 790,
-                    "y": 300,
+                    "x": 1040,
+                    "y": 200,
                     "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName6",
+                    "type": "inject",
+                    "z": "34592337ccf0a996",
+                    "name": "interval 50 sec",
+                    "props": [
+                        {
+                            "p": "payload"
+                        },
+                        {
+                            "p": "topic",
+                            "vt": "str"
+                        }
+                    ],
+                    "repeat": "50",
+                    "crontab": "",
+                    "once": false,
+                    "onceDelay": 0.1,
+                    "topic": "",
+                    "payload": "",
+                    "payloadType": "date",
+                    "x": 160,
+                    "y": 420,
+                    "wires": [
+                        [
+                            "idName13"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName7",
+                    "type": "trigger",
+                    "z": "34592337ccf0a996",
+                    "name": "",
+                    "op1": "",
+                    "op2": "true",
+                    "op1type": "str",
+                    "op2type": "bool",
+                    "duration": "0",
+                    "extend": false,
+                    "overrideDelay": false,
+                    "units": "min",
+                    "reset": "on",
+                    "bytopic": "all",
+                    "topic": "topic",
+                    "outputs": "off",
+                    "x": 940,
+                    "y": 260,
+                    "wires": []
+                },
+                {
+                    "id": "idName8",
+                    "type": "api-call-service",
+                    "z": "34592337ccf0a996",
+                    "name": "",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "light",
+                    "service": "turn_on",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "light_input_2"
+                    ],
+                    "data": "",
+                    "dataType": "jsonata",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [
+                        {
+                            "property": "toggle",
+                            "propertyType": "msg",
+                            "value": "1",
+                            "valueType": "num"
+                        }
+                    ],
+                    "queue": "none",
+                    "x": 790,
+                    "y": 120,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName9",
+                    "type": "function",
+                    "z": "34592337ccf0a996",
+                    "name": "if sleep-mode false",
+                    "func": "let sleep_mode = global.get(\"sleep_mode.g\") ?? false;\n\nif (!sleep_mode)\n{\n    return msg;\n}\n",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 370,
+                    "y": 120,
+                    "wires": [
+                        [
+                            "idName10"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName10",
+                    "type": "trigger",
+                    "z": "34592337ccf0a996",
+                    "name": "",
+                    "op1": "true",
+                    "op2": "true",
+                    "op1type": "bool",
+                    "op2type": "bool",
+                    "duration": "0",
+                    "extend": false,
+                    "overrideDelay": false,
+                    "units": "min",
+                    "reset": "off",
+                    "bytopic": "all",
+                    "topic": "topic",
+                    "outputs": 1,
+                    "x": 600,
+                    "y": 120,
+                    "wires": [
+                        [
+                            "idName8"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName11",
+                    "type": "function",
+                    "z": "34592337ccf0a996",
+                    "name": "if sleep-mode false",
+                    "func": "let sleep_mode = global.get(\"sleep_mode.g\") ?? false;\n\nif (!sleep_mode)\n{\n    return msg;\n}\n",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 770,
+                    "y": 340,
+                    "wires": [
+                        [
+                            "ff82e33d-b093-4ba4-a688-eb5a4b3e8d21"
+                        ]
+                    ]
+                },
+                {
+                    "id": "ff82e33d-b093-4ba4-a688-eb5a4b3e8d21",
+                    "type": "trigger",
+                    "z": "34592337ccf0a996",
+                    "name": "",
+                    "op1": "",
+                    "op2": "off",
+                    "op1type": "nul",
+                    "op2type": "str",
+                    "duration": "text_input_5",
+                    "extend": false,
+                    "overrideDelay": false,
+                    "units": "min",
+                    "reset": "on",
+                    "bytopic": "all",
+                    "topic": "topic",
+                    "outputs": 1,
+                    "x": 950,
+                    "y": 340,
+                    "wires": [
+                        [
+                            "idName5",
+                            "idName10"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName12",
+                    "type": "time-range-switch",
+                    "z": "6de003de01d2e65b",
+                    "name": "",
+                    "lat": "",
+                    "lon": "",
+                    "startTime": "text_input_3",
+                    "endTime": "text_input_4",
+                    "startOffset": 0,
+                    "endOffset": 0,
+                    "x": 290,
+                    "y": 200,
+                    "wires": [
+                        [
+                            "idName9"
+                        ],
+                        []
+                    ]
+                },
+                {
+                    "id": "idName13",
+                    "type": "time-range-switch",
+                    "z": "6de003de01d2e65b",
+                    "name": "",
+                    "lat": "",
+                    "lon": "",
+                    "startTime": "text_input_3",
+                    "endTime": "text_input_4",
+                    "startOffset": 0,
+                    "endOffset": 0,
+                    "x": 330,
+                    "y": 420,
+                    "wires": [
+                        [
+                            "idName4"
+                        ],
                         []
                     ]
                 }
