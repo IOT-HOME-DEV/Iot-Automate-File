@@ -3,7 +3,7 @@
         "nodeAmount": 9,
         "manual": "https://bit.ly/3Z8dEmH",
         "label": "SmartSwitch,Air,TV,Light",
-        "description": "SmartSwitch,Air,TV,Light",
+        "description": "SmartSwitch",
         "automationId": "smAutomate1",
         "templateName":["Scene Switch","IR Remode"],
         "template": [
