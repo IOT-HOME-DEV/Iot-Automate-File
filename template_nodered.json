@@ -2,7 +2,7 @@
     {
         "nodeAmount": 9,
         "manual": "https://bit.ly/3Z8dEmH",
-        "label": "SmartSwitchFLUKE99",
+        "label": "SmartSwitchFLUKE123456",
         "description": "SmartSwitch",
         "automationId": "smAutomate1",
         "templateName":["Scene Switch","IR Remode"],
