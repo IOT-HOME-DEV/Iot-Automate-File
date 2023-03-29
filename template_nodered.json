@@ -10,7 +10,7 @@
             "sensor",
             "climate"
         ],
-        "templateEntity": [5
+        "templateEntity": [
             "sensor.entityName_sensor_action",
             "entityName_climate"
         ]
