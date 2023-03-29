@@ -1,4 +1,5 @@
-[
+[   
+        // 55555555555555555
     {
         "nodeAmount": 9,
         "manual": "https://bit.ly/3Z8dEmH",
@@ -10,7 +11,7 @@
             "sensor",
             "climate"
         ],
-        "templateEntity": [
+        "templateEntity": [5
             "sensor.entityName_sensor_action",
             "entityName_climate"
         ]
