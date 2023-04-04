@@ -2,7 +2,7 @@
     {
         "nodeAmount": 9,
         "manual": "https://bit.ly/3Z8dEmH",
-        "label": "SmartSwitch55-test1",
+        "label": "SmartSwitch55-FLUKE",
         "description": "SmartSwitch",
         "automationId": "smAutomate1",
         "templateName":["Scene Switch","IR Remode"],
@@ -16,6 +16,7 @@
         ]
     },
     {
+        
         "nodeAmount": 12,
         "manual": "https://bit.ly/3k3idj4",
         "label": "YOUR-SCENE-WITH-NFC",
