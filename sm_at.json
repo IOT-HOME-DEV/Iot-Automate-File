@@ -1543,7 +1543,7 @@
                     "type": "function",
                     "z": "01dffd8074d72417",
                     "name": "send-entity",
-                    "func": "let sleep_check = global.get(\"sleep_mode.a\") ?? false;\n\nlet sensor_arr = [\"binary_sensor.0x00158d0007753005_occupancy\", \n    \"binary_sensor.0x00124b002513da02_occupancy\"];\n\nvar fn = async function (arguments) {\n    for (let x in sensor_arr) {\n        if (sensor_arr.hasOwnProperty(x)) {\n            msg.payload = sensor_arr[x];\n            node.send(msg)\n            await sleep(1000);\n        }\n    }\n}\nif (sleep_check) {\n    fn();\n    return msg;\n}\nfunction sleep(ms) {\n    return new Promise((resolve) => {\n        setTimeout(resolve, ms);\n    });\n}",
+                    "func": "let sleep_check = global.get(\"sleep_mode.a\") ?? false;\n\nlet sensor_arr = [\"sensor_input_1\", \n    \"sensor_input_1\"];\n\nvar fn = async function (arguments) {\n    for (let x in sensor_arr) {\n        if (sensor_arr.hasOwnProperty(x)) {\n            msg.payload = sensor_arr[x];\n            node.send(msg)\n            await sleep(1000);\n        }\n    }\n}\nif (sleep_check) {\n    fn();\n    return msg;\n}\nfunction sleep(ms) {\n    return new Promise((resolve) => {\n        setTimeout(resolve, ms);\n    });\n}",
                     "outputs": 1,
                     "noerr": 0,
                     "initialize": "",
