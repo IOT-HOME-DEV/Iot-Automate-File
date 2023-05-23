@@ -227,7 +227,7 @@
         "label": "natsuko-wake-up",
         "description": "Smart Automate 9",
         "templateName":["light","start time","end time","delay time"],
-        "automationId": "smAutomate6",
+        "automationId": "smAutomate9",
         "hint": [
             {
                 "name": "เริ่มนอน(ตย. 22:00)",

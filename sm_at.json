@@ -2905,7 +2905,7 @@
                     "op2": "true",
                     "op1type": "nul",
                     "op2type": "bool",
-                    "duration": "5",
+                    "duration": "text_input_3",
                     "extend": false,
                     "overrideDelay": true,
                     "units": "min",
@@ -2934,7 +2934,7 @@
                     "areaId": [],
                     "deviceId": [],
                     "entityId": [
-                        "light.644167ccba7e080327a8ca0b_light"
+                        "light_input_0"
                     ],
                     "data": "{ \"brightness\": 100, \"color_temp\": 10 }",
                     "dataType": "json",
@@ -3013,7 +3013,7 @@
                     "areaId": [],
                     "deviceId": [],
                     "entityId": [
-                        "light.644167ccba7e080327a8ca0b_light"
+                        "light_input_0"
                     ],
                     "data": "",
                     "dataType": "jsonata",
@@ -3088,7 +3088,7 @@
                     "areaId": [],
                     "deviceId": [],
                     "entityId": [
-                        "light.644167ccba7e080327a8ca0b_light"
+                        "light_input_0"
                     ],
                     "data": "{\t   \"brightness\":2\t}",
                     "dataType": "jsonata",
@@ -3117,7 +3117,7 @@
                     "areaId": [],
                     "deviceId": [],
                     "entityId": [
-                        "light.644167ccba7e080327a8ca0b_light"
+                        "light_input_0"
                     ],
                     "data": "",
                     "dataType": "jsonata",
@@ -3158,8 +3158,8 @@
                     "name": "",
                     "lat": "",
                     "lon": "",
-                    "startTime": "13:00",
-                    "endTime": "4:00",
+                    "startTime": "text_input_1",
+                    "endTime": "text_input_2",
                     "startOffset": 0,
                     "endOffset": 0,
                     "x": 290,
