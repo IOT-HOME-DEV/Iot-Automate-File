@@ -226,30 +226,30 @@
         "manual": "https://bit.ly/3KuuIPI",
         "label": "natsuko-wake-up",
         "description": "Smart Automate 9",
-        "templateName":["light","start time","end time","delay time"],
+        "templateName":["start time","end time","delay time"],
         "automationId": "smAutomate9",
         "hint": [
             {
                 "name": "เริ่มนอน(ตย. 22:00)",
-                "index": 1
+                "index": 0
             },
             {
                 "name": "ตื่นนอน(ตย. 07:00)",
-                "index": 2
+                "index": 1
             },
             {
                 "name": "หน่วงเวลานอน(ตย 10)/นาที",
-                "index": 3
+                "index": 2
             }
         ],
         "template": [
-            "light",
+    
             "text",
             "text",
             "text"
         ],
         "templateEntity": [
-            "light.entityName_light",
+ 
             "entityName_text",
             "entityName_text",
             "entityName_text"

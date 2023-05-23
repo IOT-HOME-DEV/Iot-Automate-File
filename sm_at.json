@@ -2855,19 +2855,18 @@
         "hint": [
             {
                 "name": "เริ่มนอน(ตย. 22:00)",
-                "index": 1
+                "index": 0
             },
             {
                 "name": "ตื่นนอน(ตย. 07:00)",
-                "index": 2
+                "index": 1
             },
             {
                 "name": "หน่วงเวลานอน(ตย 10)/นาที",
-                "index": 3
+                "index": 2
             }
         ],
         "template": [
-            "light",
             "text",
             "text",
             "text"
@@ -2905,7 +2904,7 @@
                     "op2": "true",
                     "op1type": "nul",
                     "op2type": "bool",
-                    "duration": "text_input_3",
+                    "duration": "text_input_2",
                     "extend": false,
                     "overrideDelay": true,
                     "units": "min",
@@ -2934,7 +2933,7 @@
                     "areaId": [],
                     "deviceId": [],
                     "entityId": [
-                        "light_input_0"
+                        "light.644167ccba7e080327a8ca0b_light"
                     ],
                     "data": "{ \"brightness\": 100, \"color_temp\": 10 }",
                     "dataType": "json",
@@ -3013,7 +3012,7 @@
                     "areaId": [],
                     "deviceId": [],
                     "entityId": [
-                        "light_input_0"
+                        "light.644167ccba7e080327a8ca0b_light"
                     ],
                     "data": "",
                     "dataType": "jsonata",
@@ -3088,7 +3087,7 @@
                     "areaId": [],
                     "deviceId": [],
                     "entityId": [
-                        "light_input_0"
+                        "light.644167ccba7e080327a8ca0b_light"
                     ],
                     "data": "{\t   \"brightness\":2\t}",
                     "dataType": "jsonata",
@@ -3117,7 +3116,7 @@
                     "areaId": [],
                     "deviceId": [],
                     "entityId": [
-                        "light_input_0"
+                        "light.644167ccba7e080327a8ca0b_light"
                     ],
                     "data": "",
                     "dataType": "jsonata",
@@ -3158,8 +3157,8 @@
                     "name": "",
                     "lat": "",
                     "lon": "",
-                    "startTime": "text_input_1",
-                    "endTime": "text_input_2",
+                    "startTime": "text_input_0",
+                    "endTime": "text_input_1",
                     "startOffset": 0,
                     "endOffset": 0,
                     "x": 290,
