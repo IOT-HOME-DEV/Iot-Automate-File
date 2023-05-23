@@ -2846,5 +2846,558 @@
                 }
             ]
         }
+    },
+    {
+        "nodeAmount": 24,
+        "label": "natsuko-wake-up",
+        "description": "Sleep-Mode",
+        "automationId": "smAutomate9",
+        "hint": [
+            {
+                "name": "เริ่มนอน(ตย. 22:00)",
+                "index": 1
+            },
+            {
+                "name": "ตื่นนอน(ตย. 07:00)",
+                "index": 2
+            },
+            {
+                "name": "หน่วงเวลานอน(ตย 10)/นาที",
+                "index": 3
+            }
+        ],
+        "template": [
+            "light",
+            "text",
+            "text",
+            "text"
+        ],
+        "data": {
+            "id": "idName1",
+            "label": "natsuko",
+            "disabled": false,
+            "nodes": [
+                {
+                    "id": "idName2",
+                    "type": "function",
+                    "z": "8a9524138457cb82",
+                    "name": "sleep-mode",
+                    "func": "\nmsg.payload = true; \n\nglobal.set(\"sleep_mode.g\", true)\nreturn msg;",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 530,
+                    "y": 140,
+                    "wires": [
+                        [
+                            "idName10"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName3",
+                    "type": "trigger",
+                    "z": "8a9524138457cb82",
+                    "name": "",
+                    "op1": "",
+                    "op2": "true",
+                    "op1type": "nul",
+                    "op2type": "bool",
+                    "duration": "5",
+                    "extend": false,
+                    "overrideDelay": true,
+                    "units": "min",
+                    "reset": "off",
+                    "bytopic": "all",
+                    "topic": "topic",
+                    "outputs": 1,
+                    "x": 880,
+                    "y": 140,
+                    "wires": [
+                        [
+                            "idName8"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName4",
+                    "type": "api-call-service",
+                    "z": "8a9524138457cb82",
+                    "name": "toggle-wake-mode",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "light",
+                    "service": "toggle",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "light.644167ccba7e080327a8ca0b_light"
+                    ],
+                    "data": "{ \"brightness\": 100, \"color_temp\": 10 }",
+                    "dataType": "json",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [],
+                    "queue": "none",
+                    "x": 1010,
+                    "y": 340,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName5",
+                    "type": "function",
+                    "z": "8a9524138457cb82",
+                    "name": "wake-up-mode",
+                    "func": "let check_sleep_mode = global.get(\"sleep_mode.g\") ?? false;\nmsg.payload = { \"data\": { \"brightness\": 200, \"color_temp\": 10 } } \nlet count_time = 10;\n\nvar fn = async function(arguments) {\n    if (check_sleep_mode) {\n        for (let index = 0; index <= count_time; index++) {\n            msg.payload = \"start\";\n            await sleep(800);\n            node.send(msg);\n        }\n        await sleep(1000);\n        msg.payload = \"end\";\n        node.send(msg);\n    }\n}\n\nfn();\nglobal.set(\"sleep_mode.a\", false);\nglobal.set(\"sleep_mode.g\", false);\nreturn msg;\n\nfunction sleep(ms) {\n    return new Promise((resolve) => {\n        setTimeout(resolve, ms);\n    });\n}",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 560,
+                    "y": 360,
+                    "wires": [
+                        [
+                            "idName6"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName6",
+                    "type": "switch",
+                    "z": "8a9524138457cb82",
+                    "name": "switch-wake-mode",
+                    "property": "payload",
+                    "propertyType": "msg",
+                    "rules": [
+                        {
+                            "t": "eq",
+                            "v": "start",
+                            "vt": "str"
+                        },
+                        {
+                            "t": "eq",
+                            "v": "end",
+                            "vt": "str"
+                        }
+                    ],
+                    "checkall": "true",
+                    "repair": false,
+                    "outputs": 2,
+                    "x": 750,
+                    "y": 360,
+                    "wires": [
+                        [
+                            "idName4"
+                        ],
+                        [
+                            "idName7"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName7",
+                    "type": "api-call-service",
+                    "z": "8a9524138457cb82",
+                    "name": "on-wake-mode",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "light",
+                    "service": "turn_on",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "light.644167ccba7e080327a8ca0b_light"
+                    ],
+                    "data": "",
+                    "dataType": "jsonata",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [],
+                    "queue": "none",
+                    "x": 1000,
+                    "y": 380,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName8",
+                    "type": "function",
+                    "z": "8a9524138457cb82",
+                    "name": "set sleep_mode.c",
+                    "func": "global.set(\"sleep_mode.a\", true)\nreturn msg;\n",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 1070,
+                    "y": 140,
+                    "wires": [
+                        [
+                            "idName11"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName9",
+                    "type": "inject",
+                    "z": "8a9524138457cb82",
+                    "name": "",
+                    "props": [
+                        {
+                            "p": "payload"
+                        },
+                        {
+                            "p": "topic",
+                            "vt": "str"
+                        }
+                    ],
+                    "repeat": "30",
+                    "crontab": "",
+                    "once": false,
+                    "onceDelay": 0.1,
+                    "topic": "",
+                    "payload": "",
+                    "payloadType": "date",
+                    "x": 130,
+                    "y": 240,
+                    "wires": [
+                        [
+                            "idName13"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName10",
+                    "type": "api-call-service",
+                    "z": "8a9524138457cb82",
+                    "name": "on-sleep-mode",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "light",
+                    "service": "turn_on",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "light.644167ccba7e080327a8ca0b_light"
+                    ],
+                    "data": "{\t   \"brightness\":2\t}",
+                    "dataType": "jsonata",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [],
+                    "queue": "none",
+                    "x": 700,
+                    "y": 140,
+                    "wires": [
+                        [
+                            "idName3"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName11",
+                    "type": "api-call-service",
+                    "z": "8a9524138457cb82",
+                    "name": "off-sleep-mode",
+                    "server": "smartautomation",
+                    "version": 5,
+                    "debugenabled": false,
+                    "domain": "light",
+                    "service": "turn_off",
+                    "areaId": [],
+                    "deviceId": [],
+                    "entityId": [
+                        "light.644167ccba7e080327a8ca0b_light"
+                    ],
+                    "data": "",
+                    "dataType": "jsonata",
+                    "mergeContext": "",
+                    "mustacheAltTags": false,
+                    "outputProperties": [],
+                    "queue": "none",
+                    "x": 1260,
+                    "y": 140,
+                    "wires": [
+                        []
+                    ]
+                },
+                {
+                    "id": "idName12",
+                    "type": "function",
+                    "z": "8a9524138457cb82",
+                    "name": "out sleep mode",
+                    "func": "global.set(\"sleep_mode.a\", false);\nglobal.set(\"sleep_mode.g\", false);\nmsg.payload =  \"off\";\n    return msg;\n\n",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 820,
+                    "y": 240,
+                    "wires": [
+                        [
+                            "idName3",
+                            "idName11"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName13",
+                    "type": "time-range-switch",
+                    "z": "8a9524138457cb82",
+                    "name": "",
+                    "lat": "",
+                    "lon": "",
+                    "startTime": "13:00",
+                    "endTime": "4:00",
+                    "startOffset": 0,
+                    "endOffset": 0,
+                    "x": 290,
+                    "y": 240,
+                    "wires": [
+                        [
+                            "idName15"
+                        ],
+                        [
+                            "idName16"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName14",
+                    "type": "trigger",
+                    "z": "8a9524138457cb82",
+                    "name": "",
+                    "op1": "true",
+                    "op2": "true",
+                    "op1type": "bool",
+                    "op2type": "bool",
+                    "duration": "0",
+                    "extend": false,
+                    "overrideDelay": false,
+                    "units": "min",
+                    "reset": "false",
+                    "bytopic": "all",
+                    "topic": "topic",
+                    "outputs": 1,
+                    "x": 360,
+                    "y": 140,
+                    "wires": [
+                        [
+                            "idName2"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName15",
+                    "type": "change",
+                    "z": "8a9524138457cb82",
+                    "name": "set to true",
+                    "rules": [
+                        {
+                            "t": "set",
+                            "p": "payload",
+                            "pt": "msg",
+                            "to": "true",
+                            "tot": "bool"
+                        }
+                    ],
+                    "action": "",
+                    "property": "",
+                    "from": "",
+                    "to": "",
+                    "reg": false,
+                    "x": 450,
+                    "y": 220,
+                    "wires": [
+                        [
+                            "idName21"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName16",
+                    "type": "change",
+                    "z": "8a9524138457cb82",
+                    "name": "set to false",
+                    "rules": [
+                        {
+                            "t": "set",
+                            "p": "payload",
+                            "pt": "msg",
+                            "to": "false",
+                            "tot": "bool"
+                        }
+                    ],
+                    "action": "",
+                    "property": "",
+                    "from": "",
+                    "to": "",
+                    "reg": false,
+                    "x": 450,
+                    "y": 260,
+                    "wires": [
+                        [
+                            "idName18"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName17",
+                    "type": "trigger",
+                    "z": "8a9524138457cb82",
+                    "name": "",
+                    "op1": "true",
+                    "op2": "true",
+                    "op1type": "bool",
+                    "op2type": "bool",
+                    "duration": "0",
+                    "extend": false,
+                    "overrideDelay": false,
+                    "units": "min",
+                    "reset": "true",
+                    "bytopic": "all",
+                    "topic": "topic",
+                    "outputs": 1,
+                    "x": 380,
+                    "y": 360,
+                    "wires": [
+                        [
+                            "idName5"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName18",
+                    "type": "link out",
+                    "z": "8a9524138457cb82",
+                    "name": "link out 18",
+                    "mode": "link",
+                    "links": [
+                        "idName19",
+                        "idName20"
+                    ],
+                    "x": 545,
+                    "y": 260,
+                    "wires": []
+                },
+                {
+                    "id": "idName19",
+                    "type": "link in",
+                    "z": "8a9524138457cb82",
+                    "name": "link in 18",
+                    "links": [
+                        "idName21",
+                        "idName18"
+                    ],
+                    "x": 255,
+                    "y": 360,
+                    "wires": [
+                        [
+                            "idName17"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName20",
+                    "type": "link in",
+                    "z": "8a9524138457cb82",
+                    "name": "link in 19",
+                    "links": [
+                        "idName21",
+                        "idName18"
+                    ],
+                    "x": 245,
+                    "y": 140,
+                    "wires": [
+                        [
+                            "idName14"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName21",
+                    "type": "link out",
+                    "z": "8a9524138457cb82",
+                    "name": "link out 19",
+                    "mode": "link",
+                    "links": [
+                        "idName20",
+                        "idName19"
+                    ],
+                    "x": 545,
+                    "y": 220,
+                    "wires": []
+                },
+                {
+                    "id": "idName22",
+                    "type": "mqtt in",
+                    "z": "8a9524138457cb82",
+                    "name": "",
+                    "topic": "Nocard",
+                    "qos": "0",
+                    "datatype": "auto-detect",
+                    "broker": "aabbcc",
+                    "nl": false,
+                    "rap": true,
+                    "rh": 0,
+                    "inputs": 0,
+                    "x": 410,
+                    "y": 460,
+                    "wires": [
+                        [
+                            "idName23"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName23",
+                    "type": "function",
+                    "z": "8a9524138457cb82",
+                    "name": "off_cmd",
+                    "func": "\nflow.set(\"Natsuko\", false);\nmsg.payload = \"off\";\nreturn msg;",
+                    "outputs": 1,
+                    "noerr": 0,
+                    "initialize": "",
+                    "finalize": "",
+                    "libs": [],
+                    "x": 560,
+                    "y": 460,
+                    "wires": [
+                        [
+                            "idName24",
+                            "idName12"
+                        ]
+                    ]
+                },
+                {
+                    "id": "idName24",
+                    "type": "debug",
+                    "z": "8a9524138457cb82",
+                    "name": "debug 83",
+                    "active": true,
+                    "tosidebar": true,
+                    "console": false,
+                    "tostatus": false,
+                    "complete": "payload",
+                    "targetType": "msg",
+                    "statusVal": "",
+                    "statusType": "auto",
+                    "x": 840,
+                    "y": 460,
+                    "wires": []
+                }
+            ]
+        }
     }
 ]

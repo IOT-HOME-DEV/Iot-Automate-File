@@ -220,5 +220,39 @@
             "entityName_text",
             "entityName_text"
         ]
+    },
+    {
+        "nodeAmount": 24,
+        "manual": "https://bit.ly/3KuuIPI",
+        "label": "natsuko-wake-up",
+        "description": "Smart Automate 9",
+        "templateName":["light","start time","end time","delay time"],
+        "automationId": "smAutomate6",
+        "hint": [
+            {
+                "name": "เริ่มนอน(ตย. 22:00)",
+                "index": 1
+            },
+            {
+                "name": "ตื่นนอน(ตย. 07:00)",
+                "index": 2
+            },
+            {
+                "name": "หน่วงเวลานอน(ตย 10)/นาที",
+                "index": 3
+            }
+        ],
+        "template": [
+            "light",
+            "text",
+            "text",
+            "text"
+        ],
+        "templateEntity": [
+            "light.entityName_light",
+            "entityName_text",
+            "entityName_text",
+            "entityName_text"
+        ]
     }
 ]
